@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Margins -->
+    <dimen name="_20sdp">20dp</dimen>
+
+    <dimen name="_7sdp">7dp</dimen>
+    <dimen name="_25sdp">25dp</dimen>
+    <dimen name="_1sdp">1dp</dimen>
+    <dimen name="_65sdp">65dp</dimen>
+
+    <dimen name="_120sdp">120dp</dimen>
+    <dimen name="_96sdp">96dp</dimen>
+    <dimen name="_42sdp">42dp</dimen>
+    <dimen name="_48sdp">48dp</dimen>
+
+
+    <dimen name="_170sdp">170dp</dimen>
+    <dimen name="_14sdp">14sp</dimen>
+
+    <dimen name="_24sdp">24sp</dimen>s
+    <dimen name="_13sdp">13sp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- Button customization -->
+    <dimen name="title_height">45dip</dimen>
+    <dimen name="_72sdp">72dp</dimen>
+    <!-- Add missing _12sdp -->
+    <dimen name="_12sdp">12dp</dimen>
+    <dimen name="_5sdp">5dp</dimen>
+    <dimen name="_8sdp">8dp</dimen>
+    <dimen name="_10sdp">10dp</dimen>
+    <dimen name="_58dp">58dp</dimen>
+    <dimen name="_21sdp">21sp</dimen>
+    <dimen name="_40dp">40dp</dimen>
+    <dimen name="_70sdp">70dp</dimen>
+    <dimen name="_190sdp">190dp</dimen>
+    <dimen name="_230sdp">230dp</dimen>
+    <dimen name="_16dp">16dp</dimen>
+    <dimen name="_18dp">18sp</dimen>
+
+</resources>

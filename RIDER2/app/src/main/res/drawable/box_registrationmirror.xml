@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fromDegrees="@integer/angle_rtl_180"
+    android:toDegrees="0"
+    android:drawable="@drawable/box_registration">
+</rotate>

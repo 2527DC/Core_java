@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE resources [<!ENTITY appName "MLT ETS RIDER "><!ENTITY Provider "Driver"><!ENTITY provider "driver"><!ENTITY Service "Ride"><!ENTITY service "ride">]>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="app_name">MLT ETS RIDER</string>
+    <!-- mine -->
+
+
+
+
+    <string name="google_map_api" translatable="false">google_map_key</string>
+    <string name="facebook_app_id" translatable="false">12345</string>
+
+    <string name="we_will_send_you_a_one_time_sms_message_carrier_rate_may_apply">We will send you a One time SMS message carrier rate may apply</string>
+
+    <!--Navigation Drawer -->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Settings</string>
+
+    <!--Nav items-->
+    <string name="action_coupon">Coupon</string>
+    <string name="action_wallet">&appName; Wallet</string>
+    <string name="action_logout">Logout</string>
+    <string name="action_track">On Going Trip</string>
+    <string name="no_running_Trip">No on going Trip</string>
+
+    <string name="version">v %s</string>
+
+    <string name="banner_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="interstitial_id">ca-app-pub-3940256099942544/1033173712</string>
+
+    <!--Activity Begin-->
+
+    <!--Activity Email -->
+    <string name="sample_mail_id">name@examplecom</string>
+
+    <!--Activity Password -->
+
+
+    <!--Activity Register-->
+    <string name="email">Email</string>
+    <string name="gender">Gender</string>
+    <string name="phone_number">Phone number</string>
+    <string name="first_name">First name</string>
+    <string name="password_txt">******</string>
+
+    <!-- Activity ForgetPassword -->
+    <string name="recover_password">Enter your mail ID for recovery</string>
+
+    <!-- Coupon Fragment-->
+    <string name="enter_the_coupon">Enter the coupon code</string>
+    <string name="add_coupon">ADD COUPON</string>
+
+    <!-- Edit Activity-->
+    <string name="update_success">Profile Updated</string>
+
+
+    <!-- Home Fragment-->
+    <string name="where_to_go">Where to?</string>
+    <string name="selected_payment_mode">Cash</string>
+    <string name="change">Change</string>
+
+
+    <!--Schedule Layout -->
+    <string name="schedule">Schedule a &Service;</string>
+    <string name="sample_date">Choose a date</string>
+    <string name="sample_time">Choose a time</string>
+    <string name="next">Schedule Request</string>
+    <string name="different_time">You can\'t schedule in past timings, please choose different time</string>
+    <string name="choose_date_time">Please choose date and time for schedule</string>
+
+    <!--Service List Item -->
+    <string name="no_service">No Services found</string>
+
+    <!--Approximate -->
+
+    <!-- Confirm your pickup -->
+    <string name="done">Done</string>
+
+    <string name="resgist">Register</string>
+    <string name="sign_in">Sign In</string>
+    <string name="or_sign_in_with">Or sign in with</string>
+
+    <!-- Waiting for provider -->
+    <string name="looking_for_ride">Finding Auction</string>
+    <string name="cancel_ride">Cancel Ride</string>
+    <string name="share">Share</string>
+    <string name="cancel_ride_alert">Are you sure you want to cancel the &service;?</string>
+    <string name="no_drivers_found">No drivers available to take your trip</string>
+    <string name="driver_busy">Your trip was cancelled by the driver.Please contact us for support</string>
+
+
+    <string name="my_reason_is_not_listed">My reason is not listed</string>
+    <string name="booked_another_cab">Booked another cab</string>
+    <string name="plan_changed">Plan Changed</string>
+    <string name="please_select_reason">Please select reason</string>
+    <string name="please_specify_reason">Please specify reason</string>
+    <string name="driver_is_not_moving">Driver is not moving</string>
+    <string name="driver_denied_to_come">Driver Denied to Come</string>
+    <!--Driver Accepted-->
+    <string name="sample_name">Will Smith</string>
+    <string name="sample_service">BMW</string>
+    <string name="call_btn">Call</string>
+    <string name="cancel_trip">Cancel Ride</string>
+    <string name="surge_pricing">Due to peak hours, charges will be vary based on availability of providers</string>
+
+
+    <!--    Payment Fragment-->
+    <string name="payment">Payment</string>
+    <string name="payment_methods">Payment Methods</string>
+    <string name="add_payments">Add Card for payments</string>
+    <string name="add">Add Card</string>
+    <string name="enter_card_details">Card details not valid</string>
+    <string name="are_you_sure">Are you sure you want to remove?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+
+
+
+    <!--Status -->
+    <string name="arrived">&Provider; has arrived at your location</string>
+    <string name="picked_up">you are on &service;</string>
+
+    <!--Your Trips-->
+    <string name="history">History</string>
+    <string name="comments">Comments</string>
+    <string name="no_trips">You have no past trips</string>
+    <string name="your_trips">Your Trips</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="past">Past</string>
+
+
+    <!--Invoice -->
+    <string name="invoice">Invoice</string>
+    <string name="base_price">Base fare</string>
+    <string name="booking_id">Booking ID</string>
+    <string name="sample_base_price">$10000</string>
+    <string name="extra_price">Extra</string>
+    <string name="tax">Tax</string>
+    <string name="total">Total</string>
+    <string name="pay_now">Pay Now</string>
+    <string name="distance_price">Distance fare</string>
+
+    <!--Rate provider-->
+    <string name="rate_provider">Rate your trip with</string>
+    <string name="write_your_comment">Write your comment</string>
+    <string name="submit">Submit</string>
+
+
+    <!-- Source and destination-->
+    <string name="source_location">Your location</string>
+
+    <!--Show Dailog-->
+    <string name="connect_to_network">Connect to network or quit</string>
+    <string name="cencel_request">Are you sure you want to cancel the &service;?</string>
+    <string name="connect_to_wifi">Connect to WIFI</string>
+
+
+    <!-- Error Messages-->
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="something_went_wrong_net">Something went wrong, Please check internet connection</string>
+    <string name="oops_connect_your_internet">Oops ! Connect your Internet</string>
+    <string name="server_down">Unable to reach server</string>
+    <string name="please_try_again">Please try again</string>
+    <string name="email_validation">Enter your email ID</string>
+    <string name="not_valid_email">Not a valid email ID</string>
+    <string name="password_validation">Password could not be left empty</string>
+    <string name="first_name_empty">First name required</string>
+
+    <!--True or False -->
+    <string name="True">true</string>
+    <string name="False">false</string>
+
+
+    <!--Coupon Activity-->
+    <string name="not_vaild_coupon">Coupon is not valid or may expired</string>
+    <string name="coupon_added">Coupon applied successfully</string>
+    <string name="add_coupon_txt">Add Coupon</string>
+    <string name="added_coupon">Coupon\'s applied by you</string>
+    <string name="already_in_use_coupon">Coupon already used by you</string>
+    <string name="expired_coupon">Sorry, coupon has expired</string>
+    <string name="off">OFF</string>
+    <string name="the_applied_coupon">The coupon code applied is</string>
+    <string name="valid_until">Valid until</string>
+
+
+    <!--Wallet Activity-->
+    <string name="wallet_balance">Your wallet amount is</string>
+
+
+    <!--Change Password-->
+    <string name="change_password_title">Change Password</string>
+    <string name="current_password">Current Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_password">Confirm New Password</string>
+    <string name="please_enter_current_pass">Please enter current password</string>
+    <string name="please_enter_new_pass">Please enter new password</string>
+    <string name="please_enter_confirm_pass">Please enter confirmation password</string>
+    <string name="different_passwords">Password doesn\'t match</string>
+    <string name="commision">Service charge</string>
+    <string name="request_cancel">You have cancelled the request</string>
+
+    <!-- Toolbar titles when navigation menu item is selected -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="valid_image">No image found</string>
+    <string name="confirm_password_validation">Password mismatch</string>
+    <string name="note">Note : Please enter the OTP sent to your registered email</string>
+    <string name="secrete_code">Enter OTP</string>
+    <string name="enter_mobile_no">Enter Mobile number</string>
+    <string name="logout_alert">Are you sure you want to logout?</string>
+    <string name="no_comments">No comment available</string>
+    <string name="pin_location">Set pin location</string>
+    <string name="emaergeny_call">Are you sure you want to proceed with Emergency call?</string>
+    <string name="user_no_mobile">No mobile number</string>
+    <string name="profile">Profile</string>
+    <string name="reason_to_cancel">Reason for cancellation</string>
+    <string name="surge_pricing_title">Due to high demand price may vary</string>
+
+    <!--Activity Help-->
+    <string name="help">Help</string>
+    <string name="book_name">Booking ID</string>
+    <string name="password_size">Password size must be atleast 6</string>
+    <string name="sorry_for_inconvinent">Sorry for inconvenient,Our assisants are busy right now</string>
+    <string name="email_exist">The email has already been taken</string>
+    <string name="first_name_no_number">First name do not accept numbers</string>
+    <string name="use_wallet_amount">Use wallet amount</string>
+    <string name="arriving">&Provider; accepted your request.</string>
+    <string name="view_invoice">View receipt</string>
+    <string name="terms_of_Service">Terms of Service</string>
+
+    <string name="privacy_policy_">Privacy Policy</string>
+    <string name="legal">Legal</string>
+    <string name="about_page">It is a long established fact that a reader will be distracted by
+        the readable content of a page when looking at its layout. The point of using Lorem Ipsum
+        is that it has a more-or-less normal distribution of letters, as opposed to using
+        Various versions have evolved over the years, sometimes by accident,
+        sometimes on purpose (injected humour and the like).</string>
+    <string name="paid_driver">You paid to your driver</string>
+
+
+    <!--Activity Begin-->
+
+    <string name="i_forgot_my_password">Forgot?</string>
+
+    <!--Activity Password -->
+
+    <string name="password">Password</string>
+    <!--Activity Register-->
+
+    <string name="welcome_text">Welcome to  MLT ETS RIDER support</string>
+
+    <!--Driver Accepted-->
+    <string name="call_support">Call Support</string>
+    <string name="chat_support">Chat Support</string>
+    <string name="weburl">Web Url</string>
+
+
+    <string name="trip_completed">Trip Completed</string>
+    <string name="change_destination">Change Destination</string>
+    <string name="add_stop">Add Stop</string>
+    <string name="round_trip">Round Trip</string>
+    <string name="enter_destination">Enter Destination</string>
+    <string name="pickup_location">Pickup Address</string>
+    <string name="destination_location">Drop Address</string>
+    <string name="driver_is_on_the_way">Driver is on the way</string>
+    <string name="request_ride">Request Ride</string>
+    <string name="base_fare">Base Fare</string>
+
+    <string name="fare">Fare/km</string>
+    <string name="fare_min">Fare/min</string>
+    <string name="fare_type">Fare Type</string>
+    <string name="capacity">Capacity</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="notifications">Notifications</string>
+    <string name="accounts">Accounts</string>
+
+
+    <string name="description_add">Add Calendar</string>
+    <string name="summary">Title</string>
+    <string name="summary_hint">Enter the calendar title</string>
+    <string name="save">Save</string>
+
+    <string name="icon_desc">Application icon</string>
+    <string name="title_separator_desc">Title separator</string>
+    <string name="refresh">Refresh</string>
+    <string name="batchadd">Copy Calendar x3 (Batch)</string>
+    <string name="edit">Edit Calendar</string>
+    <string name="delete">Delete Calendar</string>
+    <string name="delete_title">Delete Calendar?</string>
+    <string name="error">Error</string>
+
+    <string name="error_format">[Error] %s</string>
+    <string name="user">Login User</string>
+    <string name="add_money">Add Money</string>
+
+
+    <string name="review">Review</string>
+    <string name="promocode_applied">PromoCode Applied</string>
+    <string name="cash_wallet">CASH AND WALLET</string>
+    <string name="card">CARD</string>
+    <string name="rate_your_trip_with">Rate your trip with</string>
+    <string name="name">Name</string>
+    <string name="enter_name">Enter  Name</string>
+    <string name="enter_email">Enter Email</string>
+    <string name="update_mobile">Update Mobile No</string>
+    <string name="update_email">Update Account Email</string>
+    <string name="resnd_in">Resend In</string>
+    <string name="no_notification_found">No Notification found</string>
+    <string name="location">Location</string>
+    <string name="location_detail">Location Detail</string>
+    <string name="copyright">Copyright</string>
+    <string name="terms_amp_conditions"><![CDATA[Terms & Conditions]]></string>
+    <string name="home">Home</string>
+    <string name="work">Work</string>
+    <string name="other">Other</string>
+    <string name="complete">Complete</string>
+    <string name="loading" tools:ignore="TypographyEllipsis">Loading...</string>
+    <string name="send">Send</string>
+    <string name="if_you_have_not_received_otp">If you have not received OTP</string>
+    <string name="cash">Cash</string>
+    <string name="promo_code">Promo Code</string>
+    <string name="resend">Resend</string>
+    <string name="past_trips">Past Rides</string>
+    <string name="upcomeng_rides">Upcoming Rides</string>
+    <string name="my_location">MyLocation</string>
+
+    <string name="no_comment">No Comment</string>
+    <string name="update_name">Update Name</string>
+    <string name="driver_will_pickup">Driver will pickup you in</string>
+    <string-array name="nav_item_activity_titles">
+        <item>Home</item>
+        <item>Photos</item>
+        <item>Movies</item>
+        <item>Notifications</item>
+        <item>Settings</item>
+    </string-array>
+    <string name="choose_language">Choose Language</string>
+
+    <string name="english">English</string>
+
+    <string name="register">Register</string>
+    <string name="registration">Registration</string>
+    <string name="login">Login</string>
+    <string name="tip_note">Enter Custom Amount</string>
+    <string name="tip_title">Add a tip</string>
+    <string name="tip_comment">Your trip was </string>
+    <string name="perfect_match">Female Driver</string>
+    <string name="reject">Reject</string>
+
+    <string name="change_language">Change Language</string>
+    <string name="action_legal">Legal Pages</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="media_home">Media</string>
+    <string name="trip">Trip</string>
+
+    <string name="arbic">Your Arabic String Here</string>
+    <string name="select_gender" translatable="false">Select Gender</string>
+
+</resources>

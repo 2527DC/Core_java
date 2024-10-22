@@ -1,0 +1,16 @@
+<resources>
+
+        <dimen name="_5sdp">10dp</dimen> <!-- Increased further for larger tablets -->
+        <dimen name="_8sdp">12dp</dimen>
+        <dimen name="_10sdp">14dp</dimen>
+        <dimen name="_21sdp">28sp</dimen>
+        <dimen name="_70sdp">90dp</dimen>
+        <dimen name="_190sdp">240dp</dimen>
+        <dimen name="_230sdp">280dp</dimen>
+        <dimen name="_170sdp">220dp</dimen>
+        <dimen name="_40dp">56dp</dimen>
+        <dimen name="_58dp">78dp</dimen>
+        <dimen name="_16dp">32dp</dimen> <!-- Even larger margin -->
+        <dimen name="_18dp">26sp</dimen>
+
+</resources>

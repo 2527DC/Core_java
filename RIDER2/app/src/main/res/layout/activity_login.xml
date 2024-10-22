@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="778dp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:fontFamily="@font/muli_semibold"
+            android:gravity="center"
+            android:text="@string/user"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_24sdp" />
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="@dimen/_120sdp"
+            android:layout_below="@+id/logo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:src="@drawable/ets1" />
+
+        <LinearLayout
+            android:id="@+id/viewLoginLayout"
+            android:layout_width="match_parent"
+            android:layout_height="157dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/middle_boxmirror"
+            android:orientation="vertical">
+
+
+            <com.mlt.ets.rider.utills.MyEditText
+                android:id="@+id/etEmail"
+                android:layout_width="296dp"
+                android:layout_height="140dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/transparent"
+                android:drawableStart="@drawable/ic_user_name"
+                android:drawablePadding="@dimen/_10sdp"
+                android:gravity="center_vertical"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:paddingStart="@dimen/_7sdp"
+                android:textColorHint="@color/black"
+                android:textSize="@dimen/_14sdp" />
+
+            <View
+                android:layout_width="@dimen/_230sdp"
+                android:layout_height="@dimen/_1sdp"
+                android:background="#f2f2f2" />
+
+
+            <com.mlt.ets.rider.utills.MyEditText
+                android:id="@+id/etPassword"
+                android:layout_width="298dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:backgroundTint="@color/transparent"
+                android:drawableStart="@drawable/ic_pasword"
+                android:drawablePadding="@dimen/_10sdp"
+                android:gravity="center_vertical"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:paddingStart="@dimen/_7sdp"
+                android:textColorHint="@color/black"
+                android:textSize="@dimen/_14sdp" />
+
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/btnLogin"
+            android:layout_width="@dimen/_48sdp"
+            android:layout_height="@dimen/_48sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:background="@drawable/round_shape"
+            android:padding="@dimen/_14sdp"
+            android:rotation="@integer/angle_rtl_180"
+            android:src="@drawable/right_arrow_new"
+            android:text="Next"
+            android:textColor="@color/white" />
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:gravity="right"-->
+        <!--android:visibility="visible">-->
+        <!---->
+
+        <!--<ImageButton-->
+        <!--android:id="@+id/btnLogin"-->
+        <!--android:layout_width="@dimen/_48sdp"-->
+        <!--android:layout_height="@dimen/_48sdp"-->
+        <!--android:background="@drawable/round_shape"-->
+        <!--android:src="@drawable/right_arrow_new" />-->
+
+        <!--</LinearLayout>-->
+
+        <com.mlt.ets.rider.utills.MyTextView
+            android:id="@+id/txtForget"
+            android:layout_width="73dp"
+            android:layout_height="35dp"
+            android:layout_below="@+id/viewLoginLayout"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:layout_marginEnd="21dp"
+            android:gravity="center"
+
+            android:text="@string/i_forgot_my_password"
+            android:textSize="@dimen/_14sdp" />
+
+
+        <LinearLayout
+            android:id="@+id/registerLayout"
+            android:layout_width="@dimen/_190sdp"
+            android:layout_height="@dimen/_70sdp"
+            android:layout_below="@+id/viewLoginLayout"
+            android:layout_marginBottom="@dimen/_65sdp"
+            android:background="@drawable/box_registrationmirror">
+
+            <com.mlt.ets.rider.utills.MyBoldTextView
+                android:id="@+id/txtSignUp"
+                android:layout_width="143dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/register"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/_21sdp"
+
+                />
+
+
+        </LinearLayout>
+
+        <!-- Google and Facebook login layout -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/registerLayout"
+            android:layout_marginTop="50dp"
+            android:gravity="end"
+            android:orientation="vertical">
+
+            <com.mlt.ets.rider.utills.MyTextView
+                android:id="@+id/btnGoogle"
+                android:layout_width="wrap_content"
+                android:layout_height="49dp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:drawableEnd="@drawable/ic_google"
+                android:drawablePadding="@dimen/_5sdp"
+                android:gravity="center|end"
+                android:text="Login with Google"
+                android:textColor="@color/black" />
+
+            <com.mlt.ets.rider.utills.MyTextView
+                android:id="@+id/btnFb"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:drawableEnd="@drawable/ic_fb"
+                android:gravity="center|end"
+                android:text="Login with Facebook"
+                android:textColor="@color/black" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/bottomLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+
+        android:padding="@dimen/_5sdp">
+
+        <!--<com.mbeba.user.Utils.MyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="or signin with"
+            android:textSize="@dimen/_13sdp"/>-->
+
+
+    </LinearLayout>
+
+</RelativeLayout>

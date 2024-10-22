@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_190sdp"
+        android:layout_centerVertical="true"
+        android:background="@drawable/middle_boxmirror"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="@dimen/_230sdp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:gravity="center|start"
+            android:orientation="vertical">
+
+            <com.mlt.ets.rider.utills.MyEditText
+                android:id="@+id/etName"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40dp"
+                android:backgroundTint="@color/transparent"
+                android:drawableStart="@drawable/ic_user_name"
+                android:drawablePadding="@dimen/_10sdp"
+                android:hint="@string/name"
+                android:inputType="textEmailAddress"
+                android:paddingStart="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_5sdp"
+                android:textColorHint="@color/black"
+                android:textSize="@dimen/_14sdp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/view_grey_bg_" />
+
+            <com.mlt.ets.rider.utills.MyEditText
+                android:id="@+id/etPassword"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40dp"
+                android:backgroundTint="@color/transparent"
+                android:drawableStart="@drawable/ic_pasword"
+                android:drawablePadding="@dimen/_10sdp"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:paddingStart="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_5sdp"
+                android:textColorHint="@color/black"
+                android:textSize="@dimen/_14sdp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/view_grey_bg_" />
+
+            <com.mlt.ets.rider.utills.MyEditText
+                android:id="@+id/etEmail"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40dp"
+                android:backgroundTint="@color/transparent"
+                android:drawableStart="@drawable/ic_mail"
+                android:drawablePadding="@dimen/_10sdp"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:paddingStart="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_5sdp"
+                android:textColorHint="@color/black"
+                android:textSize="@dimen/_14sdp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/view_grey_bg_" />
+
+            <com.jaredrummler.materialspinner.MaterialSpinner
+                android:id="@+id/spGender"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvHint"
+                app:ms_arrow_tint="@color/colorPrimaryDark"
+                android:paddingStart="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_5sdp"
+                android:drawablePadding="@dimen/_10sdp"
+                android:textColor="@color/black_text_color"
+                android:contentDescription="@string/select_gender" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/view_grey_bg_" />
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/btnSignUp"
+            android:layout_width="@dimen/_58dp"
+            android:layout_height="@dimen/_58dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:padding="@dimen/_20sdp"
+            android:background="@drawable/round_shape"
+            android:src="@drawable/right_arrow_new"
+            android:text="Next"
+            android:rotation="@integer/angle_rtl_180"
+            android:textColor="@color/white" />
+
+
+    </RelativeLayout>
+
+
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_below="@+id/button2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_8sdp"
+
+        android:src="@drawable/ets1" />
+
+    <com.mlt.ets.rider.utills.MyBoldTextView
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="@dimen/_16dp"
+        android:gravity="center"
+        android:text="@string/registration"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_18dp" />
+
+    <LinearLayout
+        android:layout_width="@dimen/_170sdp"
+        android:layout_height="@dimen/_70sdp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/box_login"
+        android:gravity="end">
+
+        <TextView
+            android:id="@+id/txtSignIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="@dimen/_5sdp"
+            android:text="@string/login"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_21sdp" />
+    </LinearLayout>
+
+
+</RelativeLayout>

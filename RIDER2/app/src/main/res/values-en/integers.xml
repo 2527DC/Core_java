@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="angle_rtl_180">0</integer>
+    <integer name="locale_mirror_flip" >0</integer>
+    <integer name="angle_rtl_tr">270</integer>
+</resources>
