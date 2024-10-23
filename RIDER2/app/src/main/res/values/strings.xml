@@ -359,5 +359,6 @@
 
     <string name="arbic">Your Arabic String Here</string>
     <string name="select_gender" translatable="false">Select Gender</string>
+    <string name="Bookings" translatable="false">Booking history</string>
 
 </resources>

@@ -11,4 +11,12 @@
     <dimen name="_58dp">68dp</dimen>
     <dimen name="_16dp">24dp</dimen> <!-- Larger margin for larger screens -->
     <dimen name="_18dp">22sp</dimen>
+
+    <dimen name="_3sdp">2dp</dimen>
+    <dimen name="_3dp">2dp</dimen>
+    <dimen name="_44sdp">30dp</dimen>
+    <dimen name="_64sdp">50dp</dimen>
+    <dimen name="_15sdp">10dp</dimen>
+    <dimen name="_2sdp">1dp</dimen>
+    <dimen name="_16sdp">14sp</dimen>
 </resources>

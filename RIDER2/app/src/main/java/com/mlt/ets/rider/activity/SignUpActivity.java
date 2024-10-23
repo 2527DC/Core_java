@@ -1,4 +1,6 @@
 package com.mlt.ets.rider.activity;
+
+import android.content.Intent; // Import Intent
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +22,7 @@ import retrofit2.Response;
 public class SignUpActivity extends AppCompatActivity {
 
     private MyEditText etName, etPassword, etEmail;
+    private MaterialSpinner spGender; // Declare the spinner here
     private String selectedGender;
 
     @Override
@@ -32,7 +35,7 @@ public class SignUpActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.etPassword);
         etEmail = findViewById(R.id.etEmail);
 
-        MaterialSpinner spGender = findViewById(R.id.spGender);
+        spGender = findViewById(R.id.spGender); // Initialize the spinner here
         spGender.setItems("Select Gender", "Male", "Female"); // Add options to the spinner
         spGender.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
             @Override
@@ -54,13 +57,12 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-
     private void validateAndSignUp() {
         String name = etName.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
 
-        if (name.isEmpty() || password.isEmpty() || email.isEmpty() || selectedGender.isEmpty()) {
+        if (name.isEmpty() || password.isEmpty() || email.isEmpty() || selectedGender == null) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -75,23 +77,42 @@ public class SignUpActivity extends AppCompatActivity {
         call.enqueue(new Callback<SignUpResponse>() {
             @Override
             public void onResponse(Call<SignUpResponse> call, Response<SignUpResponse> response) {
-                if (response.isSuccessful()) {
-                    // Log the successful response
-                    Log.d("SignUpResponse", "Response: " + response.body());
-                    Toast.makeText(SignUpActivity.this, "Sign-Up Successful!", Toast.LENGTH_SHORT).show();
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.d("SignUpResponse", "Response: " + response.body().getMessage());
+                    Toast.makeText(SignUpActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    resetFields(); // Reset fields after successful sign-up
+                    navigateToHome(); // Navigate to the home activity
                 } else {
-                    // Log the error response
-                    Log.e("SignUpResponse", "Error: " + response.errorBody());
+                    Log.e("SignUpResponse", "Error: " + response.code() + " - " + response.message());
                     Toast.makeText(SignUpActivity.this, "Sign-Up Failed", Toast.LENGTH_SHORT).show();
+                    resetFields(); // Optionally reset fields after failure
                 }
             }
 
-
             @Override
             public void onFailure(Call<SignUpResponse> call, Throwable t) {
-                Log.e("SignUpError", t.getMessage());
+                // Log failure (network or server error)
+                Log.e("SignUpError", "Failure: " + t.getMessage());
                 Toast.makeText(SignUpActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                resetFields(); // Reset fields on failure as well
             }
         });
+    }
+
+    // Method to reset input fields and spinner
+    private void resetFields() {
+        etName.setText("");
+        etPassword.setText("");
+        etEmail.setText("");
+        spGender.setSelectedIndex(0); // Reset spinner to default option
+        selectedGender = null; // Reset the selected gender
+    }
+
+    // Method to navigate to the home activity
+    private void navigateToHome() {
+        Intent intent = new Intent(SignUpActivity.this, LoginActivity.class); // Replace HomeActivity with your main activity
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); // Clear the activity stack
+        startActivity(intent);
+        finish(); // Optionally finish the current activity
     }
 }

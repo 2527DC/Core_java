@@ -91,23 +91,6 @@
             android:text="Next"
             android:textColor="@color/white" />
 
-        <!--<LinearLayout-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:gravity="right"-->
-        <!--android:visibility="visible">-->
-        <!---->
-
-        <!--<ImageButton-->
-        <!--android:id="@+id/btnLogin"-->
-        <!--android:layout_width="@dimen/_48sdp"-->
-        <!--android:layout_height="@dimen/_48sdp"-->
-        <!--android:background="@drawable/round_shape"-->
-        <!--android:src="@drawable/right_arrow_new" />-->
-
-        <!--</LinearLayout>-->
 
         <com.mlt.ets.rider.utills.MyTextView
             android:id="@+id/txtForget"

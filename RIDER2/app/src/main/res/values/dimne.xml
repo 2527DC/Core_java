@@ -40,4 +40,12 @@
     <dimen name="_16dp">16dp</dimen>
     <dimen name="_18dp">18sp</dimen>
 
+    <dimen name="_3sdp">3dp</dimen>
+    <dimen name="_3dp">3dp</dimen>
+    <dimen name="_44sdp">44dp</dimen>
+    <dimen name="_64sdp">64dp</dimen>
+    <dimen name="_15sdp">15dp</dimen>
+    <dimen name="_2sdp">2dp</dimen>
+    <dimen name="_16sdp">16sp</dimen>
+
 </resources>

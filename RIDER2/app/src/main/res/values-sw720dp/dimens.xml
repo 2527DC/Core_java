@@ -12,5 +12,11 @@
         <dimen name="_58dp">78dp</dimen>
         <dimen name="_16dp">32dp</dimen> <!-- Even larger margin -->
         <dimen name="_18dp">26sp</dimen>
-
+        <dimen name="_3sdp">9dp</dimen>
+        <dimen name="_3dp">9dp</dimen>
+        <dimen name="_44sdp">132dp</dimen>
+        <dimen name="_64sdp">192dp</dimen>
+        <dimen name="_15sdp">45dp</dimen>
+        <dimen name="_2sdp">6dp</dimen>
+        <dimen name="_16sdp">24sp</dimen>
 </resources>

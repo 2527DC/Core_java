@@ -8,7 +8,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_190sdp"
+        android:layout_height="233dp"
         android:layout_centerVertical="true"
         android:background="@drawable/middle_boxmirror"
         android:orientation="vertical">
@@ -24,7 +24,7 @@
             <com.mlt.ets.rider.utills.MyEditText
                 android:id="@+id/etName"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_40dp"
+                android:layout_height="56dp"
                 android:backgroundTint="@color/transparent"
                 android:drawableStart="@drawable/ic_user_name"
                 android:drawablePadding="@dimen/_10sdp"
@@ -43,7 +43,7 @@
             <com.mlt.ets.rider.utills.MyEditText
                 android:id="@+id/etPassword"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_40dp"
+                android:layout_height="49dp"
                 android:backgroundTint="@color/transparent"
                 android:drawableStart="@drawable/ic_pasword"
                 android:drawablePadding="@dimen/_10sdp"
@@ -62,7 +62,7 @@
             <com.mlt.ets.rider.utills.MyEditText
                 android:id="@+id/etEmail"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_40dp"
+                android:layout_height="53dp"
                 android:backgroundTint="@color/transparent"
                 android:drawableStart="@drawable/ic_mail"
                 android:drawablePadding="@dimen/_10sdp"
@@ -81,16 +81,17 @@
             <com.jaredrummler.materialspinner.MaterialSpinner
                 android:id="@+id/spGender"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_40dp"
+                android:layout_height="52dp"
+                android:contentDescription="@string/select_gender"
+                android:drawablePadding="@dimen/_10sdp"
+                android:paddingStart="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_5sdp"
+                android:textColor="@color/black_text_color"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvHint"
-                app:ms_arrow_tint="@color/colorPrimaryDark"
-                android:paddingStart="@dimen/_5sdp"
-                android:paddingEnd="@dimen/_5sdp"
-                android:drawablePadding="@dimen/_10sdp"
-                android:textColor="@color/black_text_color"
-                android:contentDescription="@string/select_gender" />
+                app:ms_arrow_tint="@color/colorPrimaryDark" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -105,11 +106,11 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:padding="@dimen/_20sdp"
             android:background="@drawable/round_shape"
+            android:padding="@dimen/_20sdp"
+            android:rotation="@integer/angle_rtl_180"
             android:src="@drawable/right_arrow_new"
             android:text="Next"
-            android:rotation="@integer/angle_rtl_180"
             android:textColor="@color/white" />
 
 
@@ -136,26 +137,6 @@
         android:text="@string/registration"
         android:textColor="@color/black"
         android:textSize="@dimen/_18dp" />
-
-    <LinearLayout
-        android:layout_width="@dimen/_170sdp"
-        android:layout_height="@dimen/_70sdp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/box_login"
-        android:gravity="end">
-
-        <TextView
-            android:id="@+id/txtSignIn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:padding="@dimen/_5sdp"
-            android:text="@string/login"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/_21sdp" />
-    </LinearLayout>
 
 
 </RelativeLayout>
