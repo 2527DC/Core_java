@@ -360,5 +360,8 @@
     <string name="arbic">Your Arabic String Here</string>
     <string name="select_gender" translatable="false">Select Gender</string>
     <string name="Bookings" translatable="false">Booking history</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_profile">Profile\n</string>
+    <string name="menu_scedule">Schedule\n</string>
 
 </resources>
