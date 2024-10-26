@@ -11,7 +11,7 @@ public class RetrofitClient implements URLS {
     private static Retrofit retrofit = null;
 
     // Base URL of the API
-    private static final String BASE_URL = "http://10.0.2.2:8080/";
+    private static final String BASE_URL = "https://ets.mltcorporate.com/";
 
     // Constructor to initialize the logging interceptor and OkHttp client
     public RetrofitClient() {

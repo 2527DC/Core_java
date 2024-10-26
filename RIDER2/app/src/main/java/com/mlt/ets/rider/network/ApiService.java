@@ -1,7 +1,5 @@
 package com.mlt.ets.rider.network;
 
-import com.mlt.ets.rider.viewModel.SignUpRequest;
-import com.mlt.ets.rider.viewModel.SignUpResponse;
 
 import org.json.JSONObject;
 
@@ -14,9 +12,9 @@ public interface ApiService {
 
     // POST request for user sign-up
     @POST("register")
-    Call<SignUpResponse> signUpUser(@Body SignUpRequest signUpRequest);
+    Call<JSONObject> signUpUser(@Body RequestBody requestBody);
 
-    @POST("login")
-    Call<SignUpResponse> loginUser(@Body RequestBody requestBody);
+    @POST("/api/login")
+    Call<JSONObject> loginUser(@Body RequestBody requestBody);
 
 }

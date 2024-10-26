@@ -304,6 +304,7 @@
     <string name="card">CARD</string>
     <string name="rate_your_trip_with">Rate your trip with</string>
     <string name="name">Name</string>
+    <string name="phoneNO" translatable="false">Phone Number</string>
     <string name="enter_name">Enter  Name</string>
     <string name="enter_email">Enter Email</string>
     <string name="update_mobile">Update Mobile No</string>
@@ -360,8 +361,10 @@
     <string name="arbic">Your Arabic String Here</string>
     <string name="select_gender" translatable="false">Select Gender</string>
     <string name="Bookings" translatable="false">Booking history</string>
-    <string name="menu_home">Home</string>
-    <string name="menu_profile">Profile\n</string>
-    <string name="menu_scedule">Schedule\n</string>
+    <string name="menu_home" translatable="false">Home</string>
+    <string name="menu_profile" translatable="false">Profile\n</string>
+    <string name="menu_scedule" translatable="false">Schedule\n</string>
+    <string name="company">Company</string>
+    <string name="razorpay" translatable="false">Your Razorpay Value Here</string>
 
 </resources>

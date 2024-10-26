@@ -94,16 +94,17 @@
 
         <com.mlt.ets.rider.utills.MyTextView
             android:id="@+id/txtForget"
-            android:layout_width="73dp"
-            android:layout_height="35dp"
+            android:layout_width="112dp"
+            android:layout_height="66dp"
             android:layout_below="@+id/viewLoginLayout"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="@dimen/_25sdp"
-            android:layout_marginEnd="21dp"
+            android:layout_marginTop="33dp"
+            android:layout_marginEnd="13dp"
             android:gravity="center"
-
             android:text="@string/i_forgot_my_password"
-            android:textSize="@dimen/_14sdp" />
+            android:textSize="@dimen/_18sdp"
+             android:textStyle="bold"
+          />
 
 
         <LinearLayout
@@ -111,6 +112,7 @@
             android:layout_width="@dimen/_190sdp"
             android:layout_height="@dimen/_70sdp"
             android:layout_below="@+id/viewLoginLayout"
+            android:layout_marginTop="35dp"
             android:layout_marginBottom="@dimen/_65sdp"
             android:background="@drawable/box_registrationmirror">
 
@@ -130,35 +132,6 @@
         </LinearLayout>
 
         <!-- Google and Facebook login layout -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/registerLayout"
-            android:layout_marginTop="50dp"
-            android:gravity="end"
-            android:orientation="vertical">
-
-            <com.mlt.ets.rider.utills.MyTextView
-                android:id="@+id/btnGoogle"
-                android:layout_width="wrap_content"
-                android:layout_height="49dp"
-                android:layout_marginEnd="@dimen/_5sdp"
-                android:drawableEnd="@drawable/ic_google"
-                android:drawablePadding="@dimen/_5sdp"
-                android:gravity="center|end"
-                android:text="Login with Google"
-                android:textColor="@color/black" />
-
-            <com.mlt.ets.rider.utills.MyTextView
-                android:id="@+id/btnFb"
-                android:layout_width="wrap_content"
-                android:layout_height="44dp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:drawableEnd="@drawable/ic_fb"
-                android:gravity="center|end"
-                android:text="Login with Facebook"
-                android:textColor="@color/black" />
-        </LinearLayout>
 
     </RelativeLayout>
 

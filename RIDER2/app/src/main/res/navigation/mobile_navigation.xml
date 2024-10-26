@@ -18,7 +18,7 @@
         tools:layout="@layout/fragment_profile" />
 
     <fragment
-        android:id="@+id/nav_schedul"
+        android:id="@+id/nav_schedule"
         android:name="com.mlt.ets.rider.fragments.SchedulFragment"
         android:label="@string/menu_scedule"
         tools:layout="@layout/fragment_schedule" />

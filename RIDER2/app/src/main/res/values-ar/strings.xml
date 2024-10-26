@@ -369,5 +369,6 @@
     <string name="edit_profile">Edit Profile</string>
     <string name="media_home">Media</string>
     <string name="trip">Trip</string>
+    <string name="company">Company</string>
 
 </resources>

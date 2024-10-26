@@ -19,7 +19,7 @@
             android:title="booking history" />
 
         <item
-            android:id="@+id/nav_schedul"
+            android:id="@+id/nav_schedule"
             android:icon="@drawable/ic_menu_schedule"
             android:title="@string/schedule" />
 

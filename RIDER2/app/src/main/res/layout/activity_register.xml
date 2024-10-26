@@ -8,14 +8,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="233dp"
+        android:layout_height="390dp"
         android:layout_centerVertical="true"
         android:background="@drawable/middle_boxmirror"
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="@dimen/_230sdp"
-            android:layout_height="wrap_content"
+            android:layout_width="318dp"
+            android:layout_height="366dp"
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/_5sdp"
             android:gravity="center|start"
@@ -24,7 +24,7 @@
             <com.mlt.ets.rider.utills.MyEditText
                 android:id="@+id/etName"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="57dp"
                 android:backgroundTint="@color/transparent"
                 android:drawableStart="@drawable/ic_user_name"
                 android:drawablePadding="@dimen/_10sdp"
@@ -34,6 +34,41 @@
                 android:paddingEnd="@dimen/_5sdp"
                 android:textColorHint="@color/black"
                 android:textSize="@dimen/_14sdp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="57dp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:orientation="horizontal">
+
+                <!-- Country Code Picker -->
+                <com.hbb20.CountryCodePicker
+                    android:id="@+id/countryCodePicker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:paddingStart="@dimen/_5sdp"
+
+                    app:ccp_showFlag="true"
+                    app:ccp_showFullName="false"
+                    app:ccp_showNameCode="false"
+                    app:ccp_showPhoneCode="true"
+                   />
+
+                <!-- Phone Number Input -->
+                <com.mlt.ets.rider.utills.MyEditText
+                    android:id="@+id/phonenumber"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/transparent"
+                    android:hint="@string/phone_number"
+                    android:inputType="phone"
+                    android:paddingStart="@dimen/_5sdp"
+                    android:paddingEnd="@dimen/_5sdp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14sdp" />
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -72,6 +107,7 @@
                 android:paddingEnd="@dimen/_5sdp"
                 android:textColorHint="@color/black"
                 android:textSize="@dimen/_14sdp" />
+
 
             <View
                 android:layout_width="match_parent"
@@ -132,7 +168,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="@dimen/_16dp"
+        android:layout_marginStart="-6dp"
+        android:layout_marginTop="28dp"
         android:gravity="center"
         android:text="@string/registration"
         android:textColor="@color/black"

@@ -349,4 +349,5 @@
     <string name="media_home">Media</string>
     <string name="trip">Trip</string>
     <string name="razorpay">razorpay_api_key</string>
+    <string name="company">Company</string>
 </resources>

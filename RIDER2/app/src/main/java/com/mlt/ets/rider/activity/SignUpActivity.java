@@ -1,28 +1,30 @@
 package com.mlt.ets.rider.activity;
 
-import android.content.Intent; // Import Intent
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.jaredrummler.materialspinner.MaterialSpinner;
+import com.hbb20.CountryCodePicker;
 import com.mlt.ets.rider.R;
 import com.mlt.ets.rider.network.ApiService;
 import com.mlt.ets.rider.network.RetrofitClient;
 import com.mlt.ets.rider.utills.MyEditText;
-import com.mlt.ets.rider.viewModel.SignUpRequest;
-import com.mlt.ets.rider.viewModel.SignUpResponse;
-
+import org.json.JSONException;
+import org.json.JSONObject;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    private MyEditText etName, etPassword, etEmail;
-    private MaterialSpinner spGender; // Declare the spinner here
+    private MyEditText etName, etPassword, etEmail, phoneNumber;
+    private MaterialSpinner spGender;
+    private CountryCodePicker countryCodePicker;
     private String selectedGender;
 
     @Override
@@ -34,18 +36,16 @@ public class SignUpActivity extends AppCompatActivity {
         etName = findViewById(R.id.etName);
         etPassword = findViewById(R.id.etPassword);
         etEmail = findViewById(R.id.etEmail);
+        phoneNumber = findViewById(R.id.phonenumber);
+        countryCodePicker = findViewById(R.id.countryCodePicker);
 
-        spGender = findViewById(R.id.spGender); // Initialize the spinner here
-        spGender.setItems("Select Gender", "Male", "Female"); // Add options to the spinner
+        // Initialize spinner and set items
+        spGender = findViewById(R.id.spGender);
+        spGender.setItems("Select Gender", "Male", "Female");
         spGender.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
             @Override
             public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
-                // Avoid assigning null value if "Select Gender" is chosen
-                if (position > 0) {
-                    selectedGender = item; // Set the selected gender only if it's not the first option
-                } else {
-                    selectedGender = null; // Reset selectedGender if "Select Gender" is chosen
-                }
+                selectedGender = (position > 0) ? item : null;
             }
         });
 
@@ -61,40 +61,70 @@ public class SignUpActivity extends AppCompatActivity {
         String name = etName.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
+        String phone = phoneNumber.getText().toString().trim();
+        String countryCode = countryCodePicker.getSelectedCountryCodeWithPlus();
 
-        if (name.isEmpty() || password.isEmpty() || email.isEmpty() || selectedGender == null) {
+        if (name.isEmpty() || password.isEmpty() || email.isEmpty() || phone.isEmpty() || selectedGender == null) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Prepare data to send
-        SignUpRequest signUpRequest = new SignUpRequest(name, password, email, selectedGender);
+        // Prepare JSON Object
+        JSONObject signUpRequest = new JSONObject();
+        try {
+            signUpRequest.put("name", name);
+            signUpRequest.put("password", password);
+            signUpRequest.put("email", email);
+            signUpRequest.put("gender", selectedGender);
+            signUpRequest.put("countryCode", countryCode);
+            signUpRequest.put("phone", phone);
+        } catch (JSONException e) {
+            Log.e("SignUpError", "JSON Error: " + e.getMessage());
+            Toast.makeText(this, "Error creating JSON request", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Create RequestBody
+        RequestBody requestBody = RequestBody.create(signUpRequest.toString(), MediaType.get("application/json; charset=utf-8"));
 
         // Send data using Retrofit
         ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
-        Call<SignUpResponse> call = apiService.signUpUser(signUpRequest);
+        Call<JSONObject> call = apiService.signUpUser(requestBody); // Assuming signUpUser returns JSONObject
 
-        call.enqueue(new Callback<SignUpResponse>() {
+        call.enqueue(new Callback<JSONObject>() {
             @Override
-            public void onResponse(Call<SignUpResponse> call, Response<SignUpResponse> response) {
+            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Log.d("SignUpResponse", "Response: " + response.body().getMessage());
-                    Toast.makeText(SignUpActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    resetFields(); // Reset fields after successful sign-up
-                    navigateToHome(); // Navigate to the home activity
+                    try {
+                        JSONObject jsonResponse = response.body();
+                        int success = jsonResponse.getInt("success");
+
+                        if (success == 1) {
+                            String message = jsonResponse.getString("message");
+                            Toast.makeText(SignUpActivity.this, message, Toast.LENGTH_SHORT).show();
+                            resetFields();
+                            navigateToHome();
+                        } else {
+                            String message = jsonResponse.getString("message");
+                            Toast.makeText(SignUpActivity.this, "Registration Failed: " + message, Toast.LENGTH_SHORT).show();
+                            resetFields();
+                        }
+                    } catch (JSONException e) {
+                        Log.e("SignUpError", "JSON Parsing Error: " + e.getMessage());
+                        Toast.makeText(SignUpActivity.this, "Error parsing response", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Log.e("SignUpResponse", "Error: " + response.code() + " - " + response.message());
                     Toast.makeText(SignUpActivity.this, "Sign-Up Failed", Toast.LENGTH_SHORT).show();
-                    resetFields(); // Optionally reset fields after failure
+                    resetFields();
                 }
             }
 
             @Override
-            public void onFailure(Call<SignUpResponse> call, Throwable t) {
-                // Log failure (network or server error)
+            public void onFailure(Call<JSONObject> call, Throwable t) {
                 Log.e("SignUpError", "Failure: " + t.getMessage());
                 Toast.makeText(SignUpActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                resetFields(); // Reset fields on failure as well
+                resetFields();
             }
         });
     }
@@ -104,15 +134,23 @@ public class SignUpActivity extends AppCompatActivity {
         etName.setText("");
         etPassword.setText("");
         etEmail.setText("");
-        spGender.setSelectedIndex(0); // Reset spinner to default option
-        selectedGender = null; // Reset the selected gender
+        phoneNumber.setText("");
+        spGender.setSelectedIndex(0);
+        selectedGender = null;
+        countryCodePicker.setDefaultCountryUsingNameCode("US"); // Reset country picker if needed
     }
 
     // Method to navigate to the home activity
     private void navigateToHome() {
-        Intent intent = new Intent(SignUpActivity.this, LoginActivity.class); // Replace HomeActivity with your main activity
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); // Clear the activity stack
+        Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-        finish(); // Optionally finish the current activity
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("SignUpActivity", "onDestroy called");
     }
 }
