@@ -21,6 +21,7 @@ import org.json.JSONObject;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -96,43 +97,44 @@ public class LoginActivity extends AppCompatActivity {
 
         // Send data to backend using Retrofit
         ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
-        Call<JSONObject> call = apiService.loginUser(requestBody); // Use the RequestBody here
-        call.enqueue(new Callback<JSONObject>() {
+        Call<ResponseBody> call = apiService.loginUser(requestBody); // Use the RequestBody here
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
-
-
-                // Log the full response for debugging
-                Log.d("LoginActivity  Responce ", "Response Code: " + response.code());
-                Log.d("LoginActivity Responce ", "Response Message: " + response.message());
-                Log.d("LoginActivity Responce ", "Response Body: " + (response.body() != null ? response.body().toString() : "null"));
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Log.d("LoginActivity Response", "Response Code: " + response.code());
+                Log.d("LoginActivity Response", "Response Message: " + response.message());
 
                 if (response.isSuccessful() && response.body() != null) {
-                    // Handle successful response
                     try {
-                        JSONObject jsonResponse = response.body();
+                        // Manually parse the response body as a JSON object
+                        String responseBodyString = response.body().string();
+                        Log.d("LoginActivity Raw Body", responseBodyString); // Log raw response for debugging
+                        JSONObject jsonResponse = new JSONObject(responseBodyString);
+
+                        // Process JSON response
                         String status = jsonResponse.getString("status");
                         if ("success".equals(status)) {
                             String apiToken = jsonResponse.getString("api_token");
-
-                            Log.d("Entered Sucess"," enterer the method of if inside the ");
+                            Log.d("LoginActivity Success", "Login successful, Token: " + apiToken);
                             Toast.makeText(LoginActivity.this, "Login Successful! Token: " + apiToken, Toast.LENGTH_SHORT).show();
                             navigateToHome();
                         } else {
-                            Toast.makeText(LoginActivity.this, "Login Failed! " + jsonResponse.optString("message", "No message available"), Toast.LENGTH_SHORT).show();
+                            String errorMessage = jsonResponse.optString("message", "No message available");
+                            Log.w("LoginActivity Failure", "Login failed: " + errorMessage);
+                            Toast.makeText(LoginActivity.this, "Login Failed! " + errorMessage, Toast.LENGTH_SHORT).show();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    } catch (Exception e) {
+                        Log.e("LoginActivity Error", "Error parsing response: " + e.getMessage());
                         Toast.makeText(LoginActivity.this, "Error parsing response", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    // Handle error response
+                    Log.w("LoginActivity Error", "Response unsuccessful: " + response.message());
+                    Log.d("LoginActivity Headers", response.headers().toString());
                     Toast.makeText(LoginActivity.this, "Login Failed! " + response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
-            public void onFailure(Call<JSONObject> call, Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.e("LoginActivity", "Error: " + t.getMessage());
                 Toast.makeText(LoginActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
@@ -142,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
     private void navigateToHome() {
 
         Log.d("NavigateToHome","entered the navigation method  ");
-        Intent intent = new Intent(LoginActivity.this, ProfileActivity.class); // Replace ProfileActivity with your main activity
+        Intent intent = new Intent(LoginActivity.this,MainActivity.class); // Replace ProfileActivity with your main activity
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); // Clear the activity stack
         startActivity(intent);
         finish(); // Optionally finish the current activity

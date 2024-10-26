@@ -4,6 +4,7 @@ package com.mlt.ets.rider.network;
 import org.json.JSONObject;
 
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -11,10 +12,10 @@ import retrofit2.http.POST;
 public interface ApiService {
 
     // POST request for user sign-up
-    @POST("register")
-    Call<JSONObject> signUpUser(@Body RequestBody requestBody);
+    @POST("api/user-registration")
+    Call<ResponseBody> signUpUser(@Body RequestBody requestBody);
 
     @POST("/api/login")
-    Call<JSONObject> loginUser(@Body RequestBody requestBody);
+    Call<ResponseBody> loginUser(@Body RequestBody requestBody);
 
 }

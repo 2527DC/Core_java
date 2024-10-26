@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.hbb20.CountryCodePicker;
 import com.mlt.ets.rider.R;
+import com.mlt.ets.rider.activity.LoginActivity;
 import com.mlt.ets.rider.network.ApiService;
 import com.mlt.ets.rider.network.RetrofitClient;
 import com.mlt.ets.rider.utills.MyEditText;
@@ -16,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -72,12 +74,12 @@ public class SignUpActivity extends AppCompatActivity {
         // Prepare JSON Object
         JSONObject signUpRequest = new JSONObject();
         try {
-            signUpRequest.put("name", name);
+            signUpRequest.put("user_name", name);
             signUpRequest.put("password", password);
-            signUpRequest.put("email", email);
+            signUpRequest.put("emailid", email);
             signUpRequest.put("gender", selectedGender);
-            signUpRequest.put("countryCode", countryCode);
-            signUpRequest.put("phone", phone);
+            signUpRequest.put("phone_code", countryCode);
+            signUpRequest.put("mobno", phone);
         } catch (JSONException e) {
             Log.e("SignUpError", "JSON Error: " + e.getMessage());
             Toast.makeText(this, "Error creating JSON request", Toast.LENGTH_SHORT).show();
@@ -89,27 +91,32 @@ public class SignUpActivity extends AppCompatActivity {
 
         // Send data using Retrofit
         ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
-        Call<JSONObject> call = apiService.signUpUser(requestBody); // Assuming signUpUser returns JSONObject
+        Call<ResponseBody> call = apiService.signUpUser(requestBody); // Updated to ResponseBody
 
-        call.enqueue(new Callback<JSONObject>() {
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     try {
-                        JSONObject jsonResponse = response.body();
-                        int success = jsonResponse.getInt("success");
+                        // Parse the response body to string
+                        String responseBodyString = response.body().string();
+                        Log.d("SignUpActivity Response", responseBodyString);
+
+                        // Parse response string as JSON
+                        JSONObject jsonResponse = new JSONObject(responseBodyString);
+                        int success = jsonResponse.optInt("success", 0);
 
                         if (success == 1) {
-                            String message = jsonResponse.getString("message");
+                            String message = jsonResponse.optString("message", "Registration successful!");
                             Toast.makeText(SignUpActivity.this, message, Toast.LENGTH_SHORT).show();
                             resetFields();
                             navigateToHome();
                         } else {
-                            String message = jsonResponse.getString("message");
+                            String message = jsonResponse.optString("message", "Registration failed!");
                             Toast.makeText(SignUpActivity.this, "Registration Failed: " + message, Toast.LENGTH_SHORT).show();
                             resetFields();
                         }
-                    } catch (JSONException e) {
+                    } catch (Exception e) {
                         Log.e("SignUpError", "JSON Parsing Error: " + e.getMessage());
                         Toast.makeText(SignUpActivity.this, "Error parsing response", Toast.LENGTH_SHORT).show();
                     }
@@ -121,7 +128,7 @@ public class SignUpActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<JSONObject> call, Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.e("SignUpError", "Failure: " + t.getMessage());
                 Toast.makeText(SignUpActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 resetFields();
