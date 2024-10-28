@@ -1,12 +1,11 @@
 package com.mlt.ets.rider.network;
 
-import com.mlt.ets.rider.Helper.URLS;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RetrofitClient implements URLS {
+public class RetrofitClient{
 
     private static Retrofit retrofit = null;
 

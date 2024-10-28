@@ -15,7 +15,9 @@ public interface ApiService {
     @POST("api/user-registration")
     Call<ResponseBody> signUpUser(@Body RequestBody requestBody);
 
-    @POST("/api/login")
+    @POST("/api/user-login")
     Call<ResponseBody> loginUser(@Body RequestBody requestBody);
 
+    @POST("api/book-now")
+    Call<ResponseBody> bookNow(@Body RequestBody requestBody);
 }
