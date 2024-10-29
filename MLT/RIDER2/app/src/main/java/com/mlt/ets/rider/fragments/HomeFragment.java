@@ -35,6 +35,7 @@
     import com.mlt.ets.rider.databinding.FragmentHomeBinding;
     import com.mlt.ets.rider.network.ApiService;
     import com.mlt.ets.rider.network.RetrofitClient;
+    import com.mlt.ets.rider.utills.MapUtils;
 
     import org.json.JSONException;
     import org.json.JSONObject;
@@ -44,6 +45,9 @@
     import java.time.LocalTime;
     import java.time.format.DateTimeFormatter;
 
+    import javax.inject.Inject;
+
+    import dagger.hilt.android.AndroidEntryPoint;
     import okhttp3.MediaType;
     import okhttp3.RequestBody;
     import okhttp3.ResponseBody;
@@ -60,17 +64,25 @@
         private FusedLocationProviderClient fusedLocationClient;
         private Marker destinationMarker;
         private HomeViewModel homeViewModel;
-        private static final String PREFS_NAME = "LocationPrefs";
-        private static final String KEY_LATITUDE = "latitude";
-        private static final String KEY_LONGITUDE = "longitude";
 
-        private  double EMLatitude,EMLongitude;
+
+        private MapUtils mapUtils;
+
+
 
         public View onCreateView(@NonNull LayoutInflater inflater,
                                  ViewGroup container, Bundle savedInstanceState) {
 
+
+
+
             // Initialize urlManager
             urlManager = new UrlManager(getContext());
+            mapUtils = new MapUtils(getContext());
+
+            String address = mapUtils.getStoredAddressFromLatLong(requireContext());
+
+            Log.d("chethan", "Current Address : " + address);
             // Get ViewModel
             homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
@@ -136,23 +148,7 @@
         }
 
         // Check stored location and get current location if not available
-        private void checkStoredLocation() {
-            // Get SharedPreferences
-            Context context = requireContext();
-            double storedLat = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE).getFloat(KEY_LATITUDE, Float.NaN);
-            double storedLng = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE).getFloat(KEY_LONGITUDE, Float.NaN);
 
-            if (storedLat != Float.NaN && storedLng != Float.NaN) {
-                // If location is already stored, use it
-                LatLng currentLocation = new LatLng(storedLat, storedLng);
-                googleMap.addMarker(new MarkerOptions().position(currentLocation).title("You are here"));
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
-                Log.d("HomeFragment", "Current Location from storage: Lat: " + storedLat + ", Lng: " + storedLng);
-            } else {
-                // If no location stored, get current location
-                getCurrentLocation();
-            }
-        }
 
 
         // Get current location
@@ -173,8 +169,7 @@
                     googleMap.addMarker(new MarkerOptions().position(currentLocation).title("You are here"));
                     googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
 
-                    // Store the current location in SharedPreferences
-                    storeLocation(location.getLatitude(), location.getLongitude());
+
 
                     Log.d("HomeFragment", "Current Location: Lat: " + location.getLatitude() + ", Lng: " + location.getLongitude());
                 } else {
@@ -184,19 +179,8 @@
         }
 
 
-        // Store the current location in SharedPreferences
-        private void storeLocation(double latitude, double longitude) {
 
-            EMLatitude =latitude;
-            EMLongitude=longitude;
 
-            Context context = requireContext();
-            context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit()
-                    .putFloat(KEY_LATITUDE, (float) latitude)
-                    .putFloat(KEY_LONGITUDE, (float) longitude)
-                    .apply();
-            Log.d("HomeFragment", "Location stored: Lat: " + latitude + ", Lng: " + longitude);
-        }
 
         // Handle destination selection on map click
         private void selectDestination(LatLng latLng) {
@@ -244,6 +228,11 @@
                 String journey_date =getCurrentDate();
                 String journey_time =getCurrentTime();
 
+                double EMLatitude =urlManager.getLatitude();
+                double  EMLongitude=urlManager.getLatitude();
+
+                System.out.println("EMLatitude: " + EMLatitude);
+                System.out.println("EMLongitude: " + EMLongitude);
 
 
                 // Change the addresses based on booking type

@@ -1,18 +1,37 @@
 package com.mlt.ets.rider.models;
+
 public class Booking {
-    private String details;
-    private String date;
+    private String bookingId;
+    private String bookDate;
+    private String bookTime;
+    private String sourceAddress;
+    private String destAddress;
 
-    public Booking(String details, String date) {
-        this.details = details;
-        this.date = date;
+    public Booking(String bookingId, String bookDate, String bookTime, String sourceAddress, String destAddress) {
+        this.bookingId = bookingId;
+        this.bookDate = bookDate;
+        this.bookTime = bookTime;
+        this.sourceAddress = sourceAddress;
+        this.destAddress = destAddress;
     }
 
-    public String getDetails() {
-        return details;
+    public String getBookingId() {
+        return bookingId;
     }
 
-    public String getDate() {
-        return date;
+    public String getBookDate() {
+        return bookDate;
+    }
+
+    public String getBookTime() {
+        return bookTime;
+    }
+
+    public String getSourceAddress() {
+        return sourceAddress;
+    }
+
+    public String getDestAddress() {
+        return destAddress;
     }
 }

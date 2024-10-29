@@ -11,10 +11,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.mlt.ets.rider.Device.DeviceTokenManager;
 import com.mlt.ets.rider.Helper.UrlManager;
 import com.mlt.ets.rider.MainActivity;
@@ -22,16 +18,15 @@ import com.mlt.ets.rider.R;
 import com.mlt.ets.rider.network.ApiService;
 import com.mlt.ets.rider.network.RetrofitClient;
 import com.mlt.ets.rider.utills.MyEditText; // Make sure you have this custom EditText class
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -41,19 +36,16 @@ public class LoginActivity extends AppCompatActivity {
     private MyEditText etEmail, etPassword; // Add EditText for email and password
 
     private UrlManager urlManager;
-    private FusedLocationProviderClient fusedLocationClient;
-    private static final String PREFS_NAME = "LocationPrefs";
-    private static final String KEY_LATITUDE = "latitude";
-    private static final String KEY_LONGITUDE = "longitude";
 
-    private double currentLatitude, currentLongitude;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         // Initialize FusedLocationProviderClient
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
 
         urlManager = new UrlManager(this);
         // Initialize views
@@ -69,7 +61,8 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleLogin(); // Call the method to handle login
+//                handleLogin(); // Call the method to handle login
+                navigateToHome();
             }
         });
 
@@ -84,40 +77,12 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void getCurrentLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // Request location permissions
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            return;
-        }
 
-        fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(this, location -> {
-                    if (location != null) {
-                        currentLatitude = location.getLatitude();
-                        currentLongitude = location.getLongitude();
-                        Log.d("LoginActivity", "Current Location: Latitude: " + currentLatitude + ", Longitude: " + currentLongitude);
-
-                        // Optionally, store location in SharedPreferences
-                        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putFloat(KEY_LATITUDE, (float) currentLatitude);
-                        editor.putFloat(KEY_LONGITUDE, (float) currentLongitude);
-                        editor.apply();
-                    } else {
-                        Log.w("LoginActivity", "Location is null");
-                        Toast.makeText(LoginActivity.this, "Unable to retrieve location", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("LoginActivity", "Failed to get location: " + e.getMessage());
-                    Toast.makeText(LoginActivity.this, "Failed to get location: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                });
-    }
     private void handleLogin() {
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
+        double EmSourceLat=urlManager.getLatitude();
+        double EmSourceLong=urlManager.getLongitude();
 
         // Validate inputs
         if (email.isEmpty()) {
@@ -136,6 +101,8 @@ public class LoginActivity extends AppCompatActivity {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("username", email);
+            jsonObject.put("EmSourceLat", EmSourceLat);
+            jsonObject.put("EmSourceLong", EmSourceLong);
             jsonObject.put("password", password);
         } catch (JSONException e) {
             e.printStackTrace();

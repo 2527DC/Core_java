@@ -1,15 +1,24 @@
 package com.mlt.ets.rider.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.hbb20.CountryCodePicker;
+import com.mlt.ets.rider.Helper.UrlManager;
 import com.mlt.ets.rider.R;
-import com.mlt.ets.rider.activity.LoginActivity;
 import com.mlt.ets.rider.network.ApiService;
 import com.mlt.ets.rider.network.RetrofitClient;
 import com.mlt.ets.rider.utills.MyEditText;
@@ -23,25 +32,31 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SignUpActivity extends AppCompatActivity {
-
+    private int locationRetrievalCount = 0;
     private MyEditText etName, etPassword, etEmail, phoneNumber;
     private MaterialSpinner spGender;
     private CountryCodePicker countryCodePicker;
     private String selectedGender;
+    private static final int LOCATION_REQUEST_CODE = 100;
+    private FusedLocationProviderClient fusedLocationClient;
+    private double currentLatitude, currentLongitude;
+
+    private UrlManager urlManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        // Initialize views
+        urlManager = new UrlManager(this);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
         etName = findViewById(R.id.etName);
         etPassword = findViewById(R.id.etPassword);
         etEmail = findViewById(R.id.etEmail);
         phoneNumber = findViewById(R.id.phonenumber);
         countryCodePicker = findViewById(R.id.countryCodePicker);
 
-        // Initialize spinner and set items
         spGender = findViewById(R.id.spGender);
         spGender.setItems("Select Gender", "Male", "Female");
         spGender.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
@@ -57,7 +72,44 @@ public class SignUpActivity extends AppCompatActivity {
                 validateAndSignUp();
             }
         });
+
+        requestLocationUpdates();
     }
+
+    private void requestLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
+            return;
+        }
+
+        LocationRequest locationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(5000); // Set interval as needed
+
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+    }
+
+    private final LocationCallback locationCallback = new LocationCallback() {
+        @Override
+        public void onLocationResult(LocationResult locationResult) {
+            if (locationResult == null) return;
+
+            // Get the current location
+            currentLatitude = locationResult.getLastLocation().getLatitude();
+            currentLongitude = locationResult.getLastLocation().getLongitude();
+
+            Log.d("SignUpActivity", "Current Location: Latitude = " + currentLatitude + ", Longitude = " + currentLongitude);
+
+            locationRetrievalCount++; // Increment the counter
+
+            if (locationRetrievalCount == 6) {
+                urlManager.storeLocation(currentLatitude, currentLongitude);
+
+                // Stop location updates after storing the second location
+                fusedLocationClient.removeLocationUpdates(this);
+            }
+        }
+    };
 
     private void validateAndSignUp() {
         String name = etName.getText().toString().trim();
@@ -66,14 +118,20 @@ public class SignUpActivity extends AppCompatActivity {
         String phone = phoneNumber.getText().toString().trim();
         String countryCode = countryCodePicker.getSelectedCountryCodeWithPlus();
 
+        Log.d("SignUpActivity", "Stored  Location: Latitude = " + urlManager.getLatitude() + ", Longitude = " + urlManager.getLatitude());
+
+        double EmSourceLat = currentLatitude;
+        double EmSourceLong = currentLongitude;
+
         if (name.isEmpty() || password.isEmpty() || email.isEmpty() || phone.isEmpty() || selectedGender == null) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Prepare JSON Object
         JSONObject signUpRequest = new JSONObject();
         try {
+            signUpRequest.put("EmSourceLat", EmSourceLat);
+            signUpRequest.put("EmSourceLong", EmSourceLong);
             signUpRequest.put("user_name", name);
             signUpRequest.put("password", password);
             signUpRequest.put("emailid", email);
@@ -86,23 +144,18 @@ public class SignUpActivity extends AppCompatActivity {
             return;
         }
 
-        // Create RequestBody
         RequestBody requestBody = RequestBody.create(signUpRequest.toString(), MediaType.get("application/json; charset=utf-8"));
-
-        // Send data using Retrofit
         ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
-        Call<ResponseBody> call = apiService.signUpUser(requestBody); // Updated to ResponseBody
+        Call<ResponseBody> call = apiService.signUpUser(requestBody);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     try {
-                        // Parse the response body to string
                         String responseBodyString = response.body().string();
                         Log.d("SignUpActivity Response", responseBodyString);
 
-                        // Parse response string as JSON
                         JSONObject jsonResponse = new JSONObject(responseBodyString);
                         int success = jsonResponse.optInt("success", 0);
 
@@ -136,7 +189,6 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    // Method to reset input fields and spinner
     private void resetFields() {
         etName.setText("");
         etPassword.setText("");
@@ -144,10 +196,9 @@ public class SignUpActivity extends AppCompatActivity {
         phoneNumber.setText("");
         spGender.setSelectedIndex(0);
         selectedGender = null;
-        countryCodePicker.setDefaultCountryUsingNameCode("US"); // Reset country picker if needed
+        countryCodePicker.setDefaultCountryUsingNameCode("US");
     }
 
-    // Method to navigate to the home activity
     private void navigateToHome() {
         Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -158,6 +209,20 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        fusedLocationClient.removeLocationUpdates(locationCallback); // Stop location updates
         Log.d("SignUpActivity", "onDestroy called");
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults); // Call the super method first
+        if (requestCode == LOCATION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                requestLocationUpdates();
+            } else {
+                Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

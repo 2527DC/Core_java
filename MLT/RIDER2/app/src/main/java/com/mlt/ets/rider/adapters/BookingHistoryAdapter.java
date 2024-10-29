@@ -1,4 +1,5 @@
 package com.mlt.ets.rider.adapters;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,14 +8,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.mlt.ets.rider.R;
 import com.mlt.ets.rider.models.Booking;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAdapter.ViewHolder> {
 
     private List<Booking> bookingList;
 
-    public BookingHistoryAdapter(List<Booking> bookings) {
-        this.bookingList = bookings;
+    public BookingHistoryAdapter(List<Booking> bookingList) {
+        this.bookingList = bookingList; // Use the booking list passed from the ViewModel
     }
 
     @NonNull
@@ -28,8 +31,12 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Booking booking = bookingList.get(position);
-        holder.textBookingDetails.setText(booking.getDetails());
-        holder.textBookingDate.setText(booking.getDate());
+
+        // Set the values for each TextView based on the booking details
+        holder.textBookingDate.setText("Date: " + booking.getBookDate());
+        holder.textBookingTime.setText("Time: " + booking.getBookTime());
+        holder.textSourceAddress.setText("Source: " + booking.getSourceAddress());
+        holder.textDestAddress.setText("Destination: " + booking.getDestAddress());
     }
 
     @Override
@@ -37,14 +44,23 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
         return bookingList.size();
     }
 
+    public void updateBookingList(List<Booking> newBookingList) {
+        this.bookingList = newBookingList; // Update the list
+        notifyDataSetChanged(); // Notify adapter about data change
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textBookingDetails;
         TextView textBookingDate;
+        TextView textBookingTime;
+        TextView textSourceAddress;
+        TextView textDestAddress;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textBookingDetails = itemView.findViewById(R.id.textBookingDetails);
             textBookingDate = itemView.findViewById(R.id.textBookingDate);
+            textBookingTime = itemView.findViewById(R.id.textBookingTime);
+            textSourceAddress = itemView.findViewById(R.id.textSourceAddress);
+            textDestAddress = itemView.findViewById(R.id.textDestAddress);
         }
     }
 }

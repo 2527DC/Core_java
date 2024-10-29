@@ -15,6 +15,9 @@ import com.mlt.ets.rider.R;
 import com.mlt.ets.rider.databinding.FragmentBookingHistoryBinding;
 import com.mlt.ets.rider.databinding.FragmentProfileBinding;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;

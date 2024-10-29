@@ -15,6 +15,9 @@ import androidx.lifecycle.ViewModelProvider;
 import com.mlt.ets.rider.databinding.FragmentScheduleBinding;
 import java.util.Calendar;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class SchedulFragment extends Fragment {
 
     private FragmentScheduleBinding binding;
