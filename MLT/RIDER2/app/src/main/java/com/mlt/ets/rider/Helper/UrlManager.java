@@ -36,6 +36,8 @@ public class UrlManager {
         sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
     }
 
+
+
     // Method to store API token
     public void storeApiToken(String apiToken) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -82,5 +84,6 @@ public class UrlManager {
         return sharedPreferences.getFloat(KEY_LONGITUDE, 0.0f);
     }
 
-
+    public UrlManager() {
+    }
 }

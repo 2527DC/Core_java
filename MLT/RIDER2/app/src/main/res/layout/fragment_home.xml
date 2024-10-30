@@ -75,6 +75,9 @@
             android:layout_height="wrap_content"
             android:text="Confirm Booking"
             android:layout_gravity="end"
-            android:layout_margin="16dp" /> <!-- Add margin for spacing -->
+            android:layout_margin="16dp" />
+
     </androidx.cardview.widget.CardView>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

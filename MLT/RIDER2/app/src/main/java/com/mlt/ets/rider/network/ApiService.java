@@ -26,7 +26,7 @@ public interface ApiService {
     @POST("api/book-now")
     Call<ResponseBody> bookNow(@Body RequestBody requestBody);
 
-    @GET("path/to/your/booking/history") // Replace with your actual endpoint
-    Call<List<Booking>> getBookingHistory();
+    @POST("api/ride-history") // Replace with your actual endpoint
+    Call<ResponseBody> getBookingHistory(@Body RequestBody requestBody);
 }
 
