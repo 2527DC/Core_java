@@ -22,6 +22,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView txtUserName, txtEditUser, txtReview, txtPassword, txtPassword2;
     private Switch switchNotifications;
     private Button btnLogout;
+
     private ScrollView scrollView;
 
     @Override

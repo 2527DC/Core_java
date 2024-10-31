@@ -46,7 +46,7 @@ public class BookingHistoryViewModel extends ViewModel {
             // Create JSON object and add user_id from UrlManager
             JSONObject bookingHistoryRequest = new JSONObject();
             bookingHistoryRequest.put("api_token", urlManager.getApiToken());
-            bookingHistoryRequest.put("user_id", urlManager.getUserId());
+            bookingHistoryRequest.put("customer_id", urlManager.getUserId());
 
             RequestBody requestBody = RequestBody.create(
                     bookingHistoryRequest.toString(),
@@ -91,16 +91,18 @@ public class BookingHistoryViewModel extends ViewModel {
         List<Booking> bookings = new ArrayList<>();
         try {
             JSONObject jsonObject = new JSONObject(jsonResponse);
-            JSONArray ridesArray = jsonObject.getJSONArray("rides");
+            JSONObject dataObject = jsonObject.getJSONObject("data"); // Access the 'data' object
+            JSONArray ridesArray = dataObject.getJSONArray("rides");  // Now access 'rides' inside 'data'
 
             for (int i = 0; i < ridesArray.length(); i++) {
                 JSONObject ride = ridesArray.getJSONObject(i);
                 Booking booking = new Booking();
-                booking.setBookingId(ride.getString("booking_id")); // Extract booking ID
+                booking.setBookingId(ride.getString("booking_id"));
                 booking.setBookDate(ride.getString("book_date"));
                 booking.setBookTime(ride.getString("book_time"));
                 booking.setSourceAddress(ride.getString("source_address"));
                 booking.setDestAddress(ride.getString("dest_address"));
+                booking.setDestAddress(ride.getString("ride_status"));
                 bookings.add(booking);
             }
         } catch (JSONException e) {
@@ -109,4 +111,6 @@ public class BookingHistoryViewModel extends ViewModel {
         return bookings;
     }
 
+    public void cancelBooking(String bookingId) {
+    }
 }

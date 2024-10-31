@@ -83,6 +83,11 @@ public class UrlManager {
     public double getLongitude() {
         return sharedPreferences.getFloat(KEY_LONGITUDE, 0.0f);
     }
+    public void clearAllData() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear(); // Clear all data stored in SharedPreferences
+        editor.apply();
+    }
 
     public UrlManager() {
     }

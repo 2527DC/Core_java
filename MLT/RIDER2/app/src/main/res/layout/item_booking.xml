@@ -73,12 +73,12 @@
         android:text="Confirmed"
         android:textColor="@android:color/holo_green_dark"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@id/button5"
+        app:layout_constraintEnd_toStartOf="@id/cancelButton"
         app:layout_constraintStart_toEndOf="@id/textStatusLabel"
         app:layout_constraintTop_toTopOf="@id/textStatusLabel" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/cancelButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

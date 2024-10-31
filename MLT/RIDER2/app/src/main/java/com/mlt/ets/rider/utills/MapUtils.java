@@ -28,7 +28,7 @@ public class MapUtils {
         double latitude = urlManager.getLatitude(); // Retrieve latitude from UrlManager
         double longitude = urlManager.getLongitude(); // Retrieve longitude from UrlManager
 
-        String EmployeeAdress= getAddressFromLatLong(context, latitude, longitude);
+        String EmployeeAdress= getAddressFromLatLong(context, longitude,latitude);
         urlManager.setEmployeAddress(EmployeeAdress);
         return EmployeeAdress;
     }
@@ -39,7 +39,7 @@ public class MapUtils {
         List<Address> addresses;
 
         try {
-            addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            addresses = geocoder.getFromLocation( longitude,latitude, 1);
             if (addresses != null && !addresses.isEmpty()) {
                 Address address = addresses.get(0);
                 return address.getAddressLine(0); // Customize this to return more specific parts if needed

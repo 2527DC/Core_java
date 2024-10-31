@@ -21,6 +21,7 @@ import com.mlt.ets.rider.Helper.UrlManager;
 import com.mlt.ets.rider.R;
 import com.mlt.ets.rider.network.ApiService;
 import com.mlt.ets.rider.network.RetrofitClient;
+import com.mlt.ets.rider.utills.MapUtils;
 import com.mlt.ets.rider.utills.MyEditText;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,14 +41,14 @@ public class SignUpActivity extends AppCompatActivity {
     private static final int LOCATION_REQUEST_CODE = 100;
     private FusedLocationProviderClient fusedLocationClient;
     private double currentLatitude, currentLongitude;
-
+    private MapUtils mapUtils;
     private UrlManager urlManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
+        mapUtils = new MapUtils(this);
         urlManager = new UrlManager(this);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -117,6 +118,9 @@ public class SignUpActivity extends AppCompatActivity {
         String email = etEmail.getText().toString().trim();
         String phone = phoneNumber.getText().toString().trim();
         String countryCode = countryCodePicker.getSelectedCountryCodeWithPlus();
+
+        String address = mapUtils.getStoredAddressFromLatLong(this);
+        Log.d("chethan", address);
 
         Log.d("SignUpActivity", "Stored  Location: Latitude = " + urlManager.getLatitude() + ", Longitude = " + urlManager.getLatitude());
 

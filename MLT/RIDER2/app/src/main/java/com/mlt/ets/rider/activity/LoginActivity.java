@@ -16,6 +16,7 @@ import com.mlt.ets.rider.MainActivity;
 import com.mlt.ets.rider.R;
 import com.mlt.ets.rider.network.ApiService;
 import com.mlt.ets.rider.network.RetrofitClient;
+import com.mlt.ets.rider.utills.MapUtils;
 import com.mlt.ets.rider.utills.MyEditText;
 
 import org.json.JSONException;
@@ -30,6 +31,7 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private MapUtils mapUtils;
     private ImageView btnLogin;
     private View txtSignUp;
     private MyEditText etEmail, etPassword;
@@ -38,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mapUtils = new MapUtils(this);
         // Check if the user is already logged in
         SharedPreferences preferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         boolean isLoggedIn = preferences.getBoolean("isLoggedIn", false);
@@ -64,6 +66,8 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 handleLogin();
             }
         });
@@ -78,6 +82,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void handleLogin() {
+
+
+        String address = mapUtils.getStoredAddressFromLatLong(this);
+
+        Log.d("chethan",address);
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
         double EmSourceLat = urlManager.getLatitude();

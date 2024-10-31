@@ -1,9 +1,11 @@
     package com.mlt.ets.rider.adapters;
 
     import android.annotation.SuppressLint;
+    import android.util.Log;
     import android.view.LayoutInflater;
     import android.view.View;
     import android.view.ViewGroup;
+    import android.widget.Button;
     import android.widget.TextView;
     import androidx.annotation.NonNull;
     import androidx.recyclerview.widget.RecyclerView;
@@ -15,9 +17,11 @@
     public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAdapter.ViewHolder> {
 
         private List<Booking> bookingList;
+        private OnBookingCancelListener cancelListener; // Listener for cancel event
 
-        public BookingHistoryAdapter(List<Booking> bookingList) {
-            this.bookingList = bookingList; // Use the booking list passed from the ViewModel
+        public BookingHistoryAdapter(List<Booking> bookingList, OnBookingCancelListener cancelListener) {
+            this.bookingList = bookingList;
+            this.cancelListener = cancelListener; // Set the cancel listener
         }
 
         @NonNull
@@ -27,6 +31,7 @@
                     .inflate(R.layout.item_booking, parent, false);
             return new ViewHolder(view);
         }
+
         @SuppressLint("SetTextI18n")
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
@@ -37,9 +42,15 @@
             holder.textBookingTime.setText("Time: " + booking.getBookTime());
             holder.textSourceAddress.setText("Source: " + booking.getSourceAddress());
             holder.textDestAddress.setText("Destination: " + booking.getDestAddress());
+            holder.textStatus.setText(booking.getStatus());
 
-            // Set the status
-            holder.textStatus.setText(booking.getStatus()); // Set booking status
+            // Set the cancel button's click listener
+            holder.cancelButton.setOnClickListener(v -> {
+                if (cancelListener != null) {
+                    cancelListener.onCancelBooking(booking.getBookingId());
+                    Log.d("ChEThan",booking.getBookingId());
+                }
+            });
         }
 
         @Override
@@ -48,8 +59,8 @@
         }
 
         public void updateBookingList(List<Booking> newBookingList) {
-            this.bookingList = newBookingList; // Update the list
-            notifyDataSetChanged(); // Notify adapter about data change
+            this.bookingList = newBookingList;
+            notifyDataSetChanged();
         }
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -57,7 +68,8 @@
             TextView textBookingTime;
             TextView textSourceAddress;
             TextView textDestAddress;
-            TextView textStatus; // Add a TextView for status
+            TextView textStatus;
+            Button cancelButton; // Add a button for canceling the booking
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -65,7 +77,13 @@
                 textBookingTime = itemView.findViewById(R.id.textBookingTime);
                 textSourceAddress = itemView.findViewById(R.id.textSourceAddress);
                 textDestAddress = itemView.findViewById(R.id.textDestAddress);
-                textStatus = itemView.findViewById(R.id.textStatus); // Initialize status TextView
+                textStatus = itemView.findViewById(R.id.textStatus);
+                cancelButton = itemView.findViewById(R.id.cancelButton); // Initialize the cancel button
             }
+        }
+
+        // Define an interface for the cancellation callback
+        public interface OnBookingCancelListener {
+            void onCancelBooking(String bookingId);
         }
     }

@@ -41,43 +41,62 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Card Content: RadioGroup for Booking Type -->
-        <RadioGroup
-            android:id="@+id/bookingTypeRadioGroup"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp"> <!-- Add padding for better spacing -->
+            android:padding="16dp">
 
-            <RadioButton
-                android:id="@+id/radioHome"
+            <!-- Card Content: RadioGroup for Booking Type -->
+            <RadioGroup
+                android:id="@+id/bookingTypeRadioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/radioHome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Home" />
+
+                <RadioButton
+                    android:id="@+id/radioOffice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Office" />
+
+                <RadioButton
+                    android:id="@+id/radioOther"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Other" />
+            </RadioGroup>
+
+            <!-- EditText fields for source and destination -->
+            <EditText
+                android:id="@+id/sourceEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Source"
+                android:visibility="gone" /> <!-- Initially hidden -->
+
+            <EditText
+                android:id="@+id/destinationEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Destination"
+                android:visibility="gone" /> <!-- Initially hidden -->
+
+            <!-- Confirm Booking Button -->
+            <Button
+                android:id="@+id/btnConfirmBooking"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Home" />
-
-            <RadioButton
-                android:id="@+id/radioOffice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Office" />
-
-            <RadioButton
-                android:id="@+id/radioOther"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Others" />
-        </RadioGroup>
-
-        <!-- Confirm Booking Button -->
-        <Button
-            android:id="@+id/btnConfirmBooking"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Confirm Booking"
-            android:layout_gravity="end"
-            android:layout_margin="16dp" />
-
+                android:text="Confirm Booking"
+                android:layout_gravity="end"
+                android:layout_marginTop="16dp" />
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
