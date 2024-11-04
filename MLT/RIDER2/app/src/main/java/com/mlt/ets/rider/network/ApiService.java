@@ -13,6 +13,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface ApiService {
 
@@ -28,5 +29,12 @@ public interface ApiService {
 
     @POST("api/ride-history") // Replace with your actual endpoint
     Call<ResponseBody> getBookingHistory(@Body RequestBody requestBody);
+
+    // New method to get directions
+    @POST("api/get-directions") // Replace with your actual endpoint for directions
+    Call<ResponseBody> getDirections(@Query("sourceLat") double sourceLat,
+                                     @Query("sourceLng") double sourceLng,
+                                     @Query("destLat") double destLat,
+                                     @Query("destLng") double destLng);
 }
 

@@ -135,6 +135,7 @@ public class SignUpActivity extends AppCompatActivity {
         JSONObject signUpRequest = new JSONObject();
         try {
             signUpRequest.put("EmSourceLat", EmSourceLat);
+            signUpRequest.put("address", address);
             signUpRequest.put("EmSourceLong", EmSourceLong);
             signUpRequest.put("user_name", name);
             signUpRequest.put("password", password);

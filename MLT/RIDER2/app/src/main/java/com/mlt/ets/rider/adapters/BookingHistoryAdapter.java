@@ -42,7 +42,7 @@
             holder.textBookingTime.setText("Time: " + booking.getBookTime());
             holder.textSourceAddress.setText("Source: " + booking.getSourceAddress());
             holder.textDestAddress.setText("Destination: " + booking.getDestAddress());
-            holder.textStatus.setText(booking.getStatus());
+            holder.textStatus.setText(booking.getRideStatus());
 
             // Set the cancel button's click listener
             holder.cancelButton.setOnClickListener(v -> {

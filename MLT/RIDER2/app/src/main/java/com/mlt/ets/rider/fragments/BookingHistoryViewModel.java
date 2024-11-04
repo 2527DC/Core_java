@@ -102,7 +102,7 @@ public class BookingHistoryViewModel extends ViewModel {
                 booking.setBookTime(ride.getString("book_time"));
                 booking.setSourceAddress(ride.getString("source_address"));
                 booking.setDestAddress(ride.getString("dest_address"));
-                booking.setDestAddress(ride.getString("ride_status"));
+                booking.setRideStatus(ride.getString("ride_status"));
                 bookings.add(booking);
             }
         } catch (JSONException e) {

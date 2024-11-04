@@ -73,21 +73,20 @@
                     android:text="Other" />
             </RadioGroup>
 
-            <!-- EditText fields for source and destination -->
-            <EditText
-                android:id="@+id/sourceEditText"
+            <!-- Autocomplete Support Fragment for Source Location -->
+            <fragment
+                android:id="@+id/autocomplete_fragment_source"
+                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Enter Source"
-                android:visibility="gone" /> <!-- Initially hidden -->
+                android:visibility="gone" />
 
-            <EditText
-                android:id="@+id/destinationEditText"
+            <fragment
+                android:id="@+id/autocomplete_fragment_destination"
+                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Enter Destination"
-                android:visibility="gone" /> <!-- Initially hidden -->
-
+                android:visibility="gone" />
             <!-- Confirm Booking Button -->
             <Button
                 android:id="@+id/btnConfirmBooking"

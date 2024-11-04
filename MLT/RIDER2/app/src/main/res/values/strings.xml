@@ -6,7 +6,7 @@
 
 
 
-
+<string name="Api_key" translatable="false">AIzaSyCI7CwlYJ6Qt5pQGW--inSsJmdEManW-K0</string>
     <string name="google_map_api" translatable="false">google_map_key</string>
     <string name="facebook_app_id" translatable="false">12345</string>
 
