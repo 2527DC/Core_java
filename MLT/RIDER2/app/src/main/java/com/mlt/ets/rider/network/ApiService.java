@@ -31,10 +31,11 @@ public interface ApiService {
     Call<ResponseBody> getBookingHistory(@Body RequestBody requestBody);
 
     // New method to get directions
-    @POST("api/get-directions") // Replace with your actual endpoint for directions
-    Call<ResponseBody> getDirections(@Query("sourceLat") double sourceLat,
-                                     @Query("sourceLng") double sourceLng,
-                                     @Query("destLat") double destLat,
-                                     @Query("destLng") double destLng);
+    @GET("maps/api/directions/json") // Google Maps Directions API endpoint
+    Call<ResponseBody> getDirections(
+            @Query("origin") String origin, // sourceLat,sourceLng
+            @Query("destination") String destination, // destLat,destLng
+            @Query("key") String apiKey // Your Google Maps API Key
+    );
 }
 

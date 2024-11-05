@@ -77,22 +77,19 @@ public class MapUtils {
 
     // Method to get directions from source to destination using the API
     public void getDirections(final GoogleMap googleMap, LatLng source, LatLng destination) {
-        // Construct the request URL for debugging
-        String requestUrl = String.format("YourBaseURL/directions?srcLat=%s&srcLng=%s&destLat=%s&destLng=%s",
-                source.latitude, source.longitude,
-                destination.latitude, destination.longitude);
-        Log.d("MapUtils", "Request URL: " + requestUrl);
+        String apiKey = "YOUR_API_KEY"; // Replace with your actual Google Maps API key
+
+        String origin = source.latitude + "," + source.longitude;
+        String dest = destination.latitude + "," + destination.longitude;
 
         // Make the API call to get directions
-        apiService.getDirections(source.latitude, source.longitude,
-                        destination.latitude, destination.longitude)
+        apiService.getDirections(origin, dest, apiKey)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if (response.isSuccessful() && response.body() != null) {
                             try {
                                 String jsonResponse = response.body().string();
-                                // Log the JSON response
                                 Log.d("MapUtils", "Direction Response: " + jsonResponse);
 
                                 // Parse the JSON response for route points
@@ -104,7 +101,6 @@ public class MapUtils {
                                 e.printStackTrace();
                             }
                         } else {
-                            // Log the error response
                             try {
                                 String errorResponse = response.errorBody() != null ? response.errorBody().string() : "No error body";
                                 Log.d("MapUtils", "Error response: " + errorResponse);
@@ -117,7 +113,6 @@ public class MapUtils {
 
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        // Handle the failure
                         Log.e("MapUtils", "Failure: " + t.getMessage());
                         t.printStackTrace();
                     }

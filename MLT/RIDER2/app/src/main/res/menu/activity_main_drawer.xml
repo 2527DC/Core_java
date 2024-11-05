@@ -1,30 +1,48 @@
-<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-
-        <group android:checkableBehavior="single">
+    <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/baseline_home_24"
-            android:title="Home" />
+            android:title="Home"
+            android:background="@drawable/rounded_item_with_border"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp" />
+
         <item
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_profile"
-            android:title="Profile" />
+            android:title="Profile"
+            android:background="@drawable/rounded_item_with_border"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+       />
+
         <item
             android:id="@+id/nav_booking"
             android:icon="@drawable/ic_menu_booking"
-            android:title="booking history" />
+            android:title="Booking History"
+            android:background="@drawable/rounded_item_with_border"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp" />
 
         <item
             android:id="@+id/nav_schedule"
             android:icon="@drawable/ic_menu_schedule"
-            android:title="@string/schedule" />
+            android:title="@string/schedule"
+            android:background="@drawable/rounded_item_with_border"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp" />
 
-
-        </group>
-
+        <item
+            android:id="@+id/nav_review"
+            android:icon="@drawable/ic_menu_reviews"
+            android:title="@string/reviews"
+            android:background="@drawable/rounded_item_with_border"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp" />
+    </group>
 
 </menu>

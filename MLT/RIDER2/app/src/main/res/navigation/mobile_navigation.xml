@@ -22,6 +22,11 @@
         android:name="com.mlt.ets.rider.fragments.SchedulFragment"
         android:label="@string/menu_scedule"
         tools:layout="@layout/fragment_schedule" />
+    <fragment
+        android:id="@+id/nav_review"
+        android:name="com.mlt.ets.rider.fragments.ReviewFragment"
+        android:label="@string/review"
+        tools:layout="@layout/fragment_review" />
 
     <fragment
         android:id="@+id/nav_booking"

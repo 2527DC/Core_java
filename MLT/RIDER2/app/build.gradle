@@ -1,8 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
-
     id 'com.google.dagger.hilt.android'
-
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -38,11 +37,18 @@ dependencies {
 
 // https://mvnrepository.com/artifact/com.google.dagger/hilt-android
     implementation "com.google.dagger:hilt-android:2.51.1"
+    implementation libs.cardview
+    implementation libs.firebase.messaging
     annotationProcessor "com.google.dagger:hilt-compiler:2.51.1"
 
     // country code library
     implementation 'com.hbb20:ccp:2.5.2'
 
+// fire base
+    implementation platform('com.google.firebase:firebase-bom:33.5.1')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-database:20.3.0' // Check for the latest version
+    implementation 'com.google.android.gms:play-services-location:20.0.0' // For location services
 
     // material-spinner
     implementation 'com.google.android.material:material:1.9.0'
@@ -51,6 +57,7 @@ dependencies {
     implementation libs.navigation.ui
 
     // google map
+
     implementation 'com.google.android.gms:play-services-maps:18.1.0' // Latest version as of this writing
     implementation 'com.google.android.gms:play-services-location:19.0.1'
     implementation 'com.google.android.libraries.places:places:2.5.0'

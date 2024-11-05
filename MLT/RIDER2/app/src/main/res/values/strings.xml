@@ -366,5 +366,6 @@
     <string name="menu_scedule" translatable="false">Schedule\n</string>
     <string name="company">Company</string>
     <string name="razorpay" translatable="false">Your Razorpay Value Here</string>
+    <string name="reviews">Reviews</string>
 
 </resources>

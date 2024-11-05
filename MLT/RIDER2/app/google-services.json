@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "247664392683",
+    "firebase_url": "https://mlt-database-default-rtdb.firebaseio.com",
+    "project_id": "mlt-database",
+    "storage_bucket": "mlt-database.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:247664392683:android:f5a4d5c61ee0dc487941ae",
+        "android_client_info": {
+          "package_name": "com.mlt.ets.rider"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHtVc6mogUt-XnELtynSGfo-nYXyoz2TA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,9 +2,12 @@ package com.mlt.ets.rider.fragments;
 
 import static android.content.ContentValues.TAG;
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
@@ -36,7 +39,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
@@ -48,7 +50,6 @@ import com.mlt.ets.rider.databinding.FragmentHomeBinding;
 import com.mlt.ets.rider.network.ApiService;
 import com.mlt.ets.rider.network.RetrofitClient;
 import com.mlt.ets.rider.utills.MapUtils;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -61,6 +62,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -233,27 +235,26 @@ public class HomeFragment extends Fragment implements URLS {
         if (selectedRadioButton != null) {
             String bookingType = selectedRadioButton.getText().toString();
 
+            // Only check for latitude and longitude if the selected booking type is "Other"
             if ("Other".equals(bookingType)) {
-                // Check if sourceAddress or destinationAddress is null
-                if (sourceAddress == null || destinationAddress == null ||
-                        sourceAddress.isEmpty() || destinationAddress.isEmpty()) {
-                    Toast.makeText(getContext(), "Please provide both source and destination", Toast.LENGTH_SHORT).show();
+                if (sourceLatLng == null || destinationLatLng == null) {
+                    Toast.makeText(getContext(), "Please provide both source and destination locations", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                // Request directions from Google Maps API
+                mapUtils.getDirections(googleMap, sourceLatLng, destinationLatLng);
             }
 
-            Log.d("Homefragment", "Booking Type: " + bookingType); // Log booking type
-            Log.d("Homefragment", "Source Address: " + sourceAddress); // Log source address
-            Log.d("Homefragment", "Destination Address: " + destinationAddress); // Log destination address
+            // Log information for debugging
+            Log.d("HomeFragment", "Booking Type: " + bookingType); // Log booking type
+            Log.d("HomeFragment", "Source LatLng: " + sourceLatLng); // Log source LatLng
+            Log.d("HomeFragment", "Destination LatLng: " + destinationLatLng); // Log destination LatLng
 
-            // Request directions from Google Maps API
-
-            mapUtils.getDirections(googleMap,sourceLatLng,destinationLatLng);
-
-//            requestDirections(sourceLatLng, destinationLatLng);
+            // Call the method to send booking details to the backend
+            sendBookingToBackend(bookingType);
 
             // Clear the selected radio button and the autocomplete fields
-            bookingTypeRadioGroup.clearCheck(); // Clear the radio button selection
+            binding.bookingTypeRadioGroup.clearCheck(); // Clear the radio button selection
             sourceAddress = ""; // Reset source address
             destinationAddress = ""; // Reset destination address
 
@@ -270,10 +271,6 @@ public class HomeFragment extends Fragment implements URLS {
         } else {
             Toast.makeText(getContext(), "Please select a booking type", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private void requestDirections(LatLng source, LatLng destination) {
-
     }
 
 
@@ -307,26 +304,52 @@ public class HomeFragment extends Fragment implements URLS {
 
         } catch (JSONException e) {
             Log.e("HomeFragment", "JSON exception: " + e.getMessage());
+            return; // Exit the method if JSON creation fails
+        }
+
+        // Check for internet connectivity before making the API call
+        if (!isInternetAvailable()) {
+            Toast.makeText(getContext(), "Internet is not connected", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), bookingDetails.toString());
-        Call<ResponseBody> call = apiService.bookNow(requestBody);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(getContext(), "Booking confirmed", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getContext(), "Booking failed: " + response.message(), Toast.LENGTH_SHORT).show();
-                }
-            }
 
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(getContext(), "Booking failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        // Making the network call in a try-catch block to handle UnknownHostException
+        try {
+            Call<ResponseBody> call = apiService.bookNow(requestBody);
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(getContext(), "Booking confirmed", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), "Booking failed: " + response.message(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    // Check if the failure was due to a network error
+                    if (t instanceof UnknownHostException) {
+                        Toast.makeText(getContext(), "Internet is not connected", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), "Booking failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        } catch (Exception e) {
+            // Catch any unexpected exceptions
+            Toast.makeText(getContext(), "Error occurred: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // Method to check if internet is available
+    private boolean isInternetAvailable() {
+        ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 
     private void getCurrentLocation() {

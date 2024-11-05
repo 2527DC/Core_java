@@ -1,99 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/border_background"
-    android:padding="10dp">
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp"
+    android:padding="8dp">
 
-    <TextView
-        android:id="@+id/textBookingDate"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Date: 2024-10-28"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/textBookingTime"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textBookingTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Time: 06:35:24"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/textBookingDate"
-        app:layout_constraintTop_toTopOf="@id/textBookingDate" />
-
-    <TextView
-        android:id="@+id/textSourceAddress"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-    android:text="Source: 123 Main St, City, State"
-    android:textSize="16sp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/textBookingDate" />
-
-    <TextView
-        android:id="@+id/textDestAddress"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="Destination: 456 Elm St, City, State"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textSourceAddress" />
-
-    <!-- New container for status and cancel button -->
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="395dp"
-        android:layout_height="38dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textDestAddress">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_background"
+        android:padding="10dp">
 
         <TextView
-            android:id="@+id/textStatusLabel"
-            android:layout_width="wrap_content"
+            android:id="@+id/textBookingDate"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Status:"
-            android:textSize="16sp"
+            android:text="Date: 2024-10-28"
+            android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/textStatus"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toStartOf="@+id/textBookingTime"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textStatus"
-            android:layout_width="96dp"
-            android:layout_height="22dp"
-            android:text="Confirmed"
-            android:textColor="@android:color/holo_green_dark"
+            android:id="@+id/textBookingTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time: 06:35:24"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/textBookingDate"
+            app:layout_constraintTop_toTopOf="@id/textBookingDate" />
+
+        <TextView
+            android:id="@+id/textSourceAddress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Source: 123 Main St, City, State"
             android:textSize="16sp"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textBookingDate" />
+
+        <TextView
+            android:id="@+id/textDestAddress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Destination: 456 Elm St, City, State"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textSourceAddress" />
+
+        <!-- Container for status and cancel button -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="395dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textDestAddress">
+
+            <TextView
+                android:id="@+id/textStatusLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Status:"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/textStatus"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textStatus"
+                android:layout_width="96dp"
+                android:layout_height="22dp"
+                android:text="Confirmed"
+                android:textColor="#DFE2F4"
+                android:textSize="16sp"
+                android:textStyle="bold"
+            android:fontFamily="sans-serif-medium"
             app:layout_constraintEnd_toStartOf="@id/cancelButton"
             app:layout_constraintStart_toEndOf="@id/textStatusLabel"
             app:layout_constraintTop_toTopOf="@id/textStatusLabel" />
 
-        <Button
-            android:id="@+id/cancelButton"
-            android:layout_width="94dp"
-            android:layout_height="38dp"
-            android:layout_marginStart="120dp"
-            android:layout_marginTop="8dp"
-            android:backgroundTint="@android:color/holo_red_dark"
-            android:text="Cancel"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/textStatus"
-            app:layout_constraintTop_toBottomOf="@id/textDestAddress"
-            tools:ignore="NotSibling" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Button
+                android:id="@+id/cancelButton"
+                android:layout_width="94dp"
+                android:layout_height="38dp"
+                android:layout_marginStart="120dp"
+                android:backgroundTint="@android:color/holo_red_dark"
+                android:text="Cancel"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/textStatus"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

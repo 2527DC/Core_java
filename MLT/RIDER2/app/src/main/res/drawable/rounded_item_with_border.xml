@@ -1,0 +1,16 @@
+<!-- res/drawable/rounded_item_with_border.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Border layer with thicker stroke and rectangular shape -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" />
+            <stroke android:width="4dp" android:color="@android:color/black" /> <!-- Thicker border -->
+        </shape>
+    </item>
+    <!-- Background layer inside the border -->
+    <item android:left="2dp" android:right="2dp" android:top="2dp" android:bottom="2dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/white" />
+        </shape>
+    </item>
+</layer-list>

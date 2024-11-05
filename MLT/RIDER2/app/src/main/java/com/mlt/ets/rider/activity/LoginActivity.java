@@ -8,7 +8,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.FirebaseApp;
+
 
 import com.mlt.ets.rider.Device.DeviceTokenManager;
 import com.mlt.ets.rider.Helper.UrlManager;
@@ -37,9 +43,14 @@ public class LoginActivity extends AppCompatActivity {
     private MyEditText etEmail, etPassword;
     private UrlManager urlManager;
 
+    // Firebase Database Reference
+    private DatabaseReference mDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         mapUtils = new MapUtils(this);
         // Check if the user is already logged in
         SharedPreferences preferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
@@ -66,8 +77,6 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 handleLogin();
             }
         });
@@ -79,18 +88,19 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
+
     }
 
     private void handleLogin() {
-
-
         String address = mapUtils.getStoredAddressFromLatLong(this);
-
-        Log.d("chethan",address);
+        Log.d("chethan", address);
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
-        double EmSourceLat = urlManager.getLatitude();
-        double EmSourceLong = urlManager.getLongitude();
+        double emSourceLat = urlManager.getLatitude();
+        double emSourceLong = urlManager.getLongitude();
+
 
         if (email.isEmpty()) {
             etEmail.setError("Email cannot be empty");
@@ -107,8 +117,8 @@ public class LoginActivity extends AppCompatActivity {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("username", email);
-            jsonObject.put("EmSourceLat", EmSourceLat);
-            jsonObject.put("EmSourceLong", EmSourceLong);
+            jsonObject.put("EmSourceLat", emSourceLat);
+            jsonObject.put("EmSourceLong", emSourceLong);
             jsonObject.put("password", password);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -119,7 +129,6 @@ public class LoginActivity extends AppCompatActivity {
         ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
         Call<ResponseBody> call = apiService.loginUser(requestBody);
         call.enqueue(new Callback<ResponseBody>() {
-
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -143,6 +152,9 @@ public class LoginActivity extends AppCompatActivity {
                             editor.apply();
 
                             navigateToHome();
+
+                            // Send user's location to Firebase after successful login
+//                            sendLocationToFirebase(emSourceLat, emSourceLong);
                         } else {
                             String errorMessage = jsonResponse.optString("message", "No message available");
                             Toast.makeText(LoginActivity.this, "Login Failed! " + errorMessage, Toast.LENGTH_SHORT).show();
@@ -162,10 +174,15 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+
+
     private void navigateToHome() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
     }
+
+
+
 }

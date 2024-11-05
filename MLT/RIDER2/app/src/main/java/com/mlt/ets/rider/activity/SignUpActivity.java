@@ -107,7 +107,6 @@ public class SignUpActivity extends AppCompatActivity {
                 urlManager.storeLocation(currentLatitude, currentLongitude);
 
                 // Stop location updates after storing the second location
-                fusedLocationClient.removeLocationUpdates(this);
             }
         }
     };
@@ -211,12 +210,7 @@ public class SignUpActivity extends AppCompatActivity {
         finish();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        fusedLocationClient.removeLocationUpdates(locationCallback); // Stop location updates
-        Log.d("SignUpActivity", "onDestroy called");
-    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -229,5 +223,12 @@ public class SignUpActivity extends AppCompatActivity {
                 Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        fusedLocationClient.removeLocationUpdates(locationCallback); // Stop location updates
+        Log.d("SignUpActivity", "onDestroy called");
     }
 }
