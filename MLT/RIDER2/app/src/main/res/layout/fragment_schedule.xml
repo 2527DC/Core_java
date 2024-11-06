@@ -1,52 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:padding="16dp"
     android:gravity="center_horizontal"
     tools:context=".fragments.SchedulFragment">
-
-    <!-- Label for Booking Type -->
-
-    <!-- RadioGroup for Booking Type Selection -->
-    <TextView
-        android:id="@+id/bookingTypeLabel"
-        android:layout_width="240dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="16dp"
-        android:text="Select Booking Type"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <RadioGroup
-        android:id="@+id/bookingTypeGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="24dp">
-
-        <RadioButton
-            android:id="@+id/monthlyBooking"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Monthly"
-            android:layout_marginEnd="16dp" />
-
-        <RadioButton
-            android:id="@+id/weeklyBooking"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Weekly"
-            android:layout_marginEnd="16dp" />
-
-        <RadioButton
-            android:id="@+id/quickBooking"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Quick Booking" />
-    </RadioGroup>
 
     <!-- Button for Date Picker -->
     <Button
@@ -55,16 +16,28 @@
         android:layout_height="wrap_content"
         android:text="Choose Date"
         android:layout_marginBottom="16dp"
-        android:padding="12dp" />
+        android:padding="12dp"
+        android:backgroundTint="@color/them_color"/>
 
-    <!-- Button for Time Picker -->
+    <!-- Button for Time Picker (now displays selected time) -->
     <Button
         android:id="@+id/timePickerButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Choose Time"
         android:layout_marginBottom="16dp"
-        android:padding="12dp" />
+        android:padding="12dp"
+        android:backgroundTint="@color/them_color"/>
+
+    <!-- Label for Frequency Selection -->
+    <TextView
+        android:id="@+id/frequencyLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Frequency of Booking"
+        android:textSize="16sp"
+        android:layout_marginBottom="8dp"
+        android:layout_gravity="start" />
 
     <!-- Spinner for Frequency Selection -->
     <Spinner
@@ -76,12 +49,33 @@
         android:minHeight="48dp"
         android:entries="@array/frequency_options" />
 
+    <!-- Label for Selected Dates -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Selected Dates"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp" />
+
+    <!-- RecyclerView for displaying selected dates -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/selectedDatesRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="vertical"
+        android:padding="8dp" />
+
     <!-- Submit Button -->
     <Button
         android:id="@+id/submitBookingButton"
-        android:layout_width="match_parent"
+        android:layout_width="223dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="#22C7C7"
+        android:padding="16dp"
         android:text="Submit Booking"
-        android:textStyle="bold"
-        android:padding="16dp" />
+        android:textColor="@android:color/white"
+        android:textStyle="bold" />
+
 </LinearLayout>

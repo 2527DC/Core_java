@@ -153,8 +153,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             navigateToHome();
 
-                            // Send user's location to Firebase after successful login
-//                            sendLocationToFirebase(emSourceLat, emSourceLong);
+
                         } else {
                             String errorMessage = jsonResponse.optString("message", "No message available");
                             Toast.makeText(LoginActivity.this, "Login Failed! " + errorMessage, Toast.LENGTH_SHORT).show();

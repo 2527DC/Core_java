@@ -57,6 +57,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+
         <service
             android:name=".services.MyFirebaseMessagingService"
             android:exported="false">

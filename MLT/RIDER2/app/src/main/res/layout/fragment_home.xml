@@ -26,7 +26,8 @@
         android:text="Book"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp" />
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/them_color"/>
 
     <!-- Booking Card -->
     <androidx.cardview.widget.CardView

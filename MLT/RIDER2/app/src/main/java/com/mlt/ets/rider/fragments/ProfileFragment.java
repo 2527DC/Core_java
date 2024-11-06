@@ -157,8 +157,11 @@ public class ProfileFragment extends Fragment {
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
             try {
                 File photoFile = createImageFile();
-                imageUri = FileProvider.getUriForFile(getActivity(),
-                        getActivity().getPackageName() + ".fileprovider", photoFile);
+                imageUri = FileProvider.getUriForFile(
+                        getActivity(),
+                        getActivity().getPackageName() + ".fileprovider", // Ensure this matches your manifest
+                        photoFile);
+
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                 cameraLauncher.launch(takePictureIntent);
             } catch (IOException e) {

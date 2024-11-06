@@ -7,7 +7,6 @@
             android:id="@+id/nav_home"
             android:icon="@drawable/baseline_home_24"
             android:title="Home"
-            android:background="@drawable/rounded_item_with_border"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp" />
 
@@ -40,6 +39,13 @@
             android:id="@+id/nav_review"
             android:icon="@drawable/ic_menu_reviews"
             android:title="@string/reviews"
+            android:background="@drawable/rounded_item_with_border"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp" />
+        <item
+            android:id="@+id/nav_rac"
+
+            android:title="@string/rac"
             android:background="@drawable/rounded_item_with_border"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp" />

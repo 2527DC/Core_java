@@ -26,6 +26,8 @@ public interface ApiService {
 
     @POST("api/book-now")
     Call<ResponseBody> bookNow(@Body RequestBody requestBody);
+    @POST("api/book-now")
+    Call<ResponseBody> secduleBooking(@Body RequestBody requestBody);
 
     @POST("api/ride-history") // Replace with your actual endpoint
     Call<ResponseBody> getBookingHistory(@Body RequestBody requestBody);

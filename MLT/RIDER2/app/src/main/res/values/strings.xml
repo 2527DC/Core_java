@@ -367,5 +367,6 @@
     <string name="company">Company</string>
     <string name="razorpay" translatable="false">Your Razorpay Value Here</string>
     <string name="reviews">Reviews</string>
+    <string name="rac">RAC</string>
 
 </resources>

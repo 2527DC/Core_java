@@ -4,7 +4,6 @@ import static android.content.ContentValues.TAG;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -18,13 +17,11 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -52,20 +49,15 @@ import com.mlt.ets.rider.network.RetrofitClient;
 import com.mlt.ets.rider.utills.MapUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+
 
 public class HomeFragment extends Fragment implements URLS {
 
@@ -242,6 +234,7 @@ public class HomeFragment extends Fragment implements URLS {
                     return;
                 }
                 // Request directions from Google Maps API
+
                 mapUtils.getDirections(googleMap, sourceLatLng, destinationLatLng);
             }
 
