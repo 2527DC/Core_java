@@ -12,6 +12,7 @@ navigationUi = "2.8.3"
 cardview = "1.0.0"
 firebaseMessaging = "24.0.3"
 firebaseDatabase = "21.0.0"
+uiTextAndroid = "1.7.5"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -26,6 +27,7 @@ navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version
 cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
 firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
+ui-text-android = { group = "androidx.compose.ui", name = "ui-text-android", version.ref = "uiTextAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Base application theme -->
-
 
     <!-- Popup overlay theme -->
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Dark">
@@ -15,4 +13,15 @@
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:statusBarColor">@color/background_color</item>
     </style>
+    <style name="CustomMenuItemTextStyle" parent="TextAppearance.AppCompat.Menu">
+        <item name="android:textSize">18sp</item> <!-- Set your desired text size -->
+    </style>
+
+    <style name="MenuItemTitleStyle">
+        <item name="android:textColor">#FFFFFF</item> <!-- White text color -->
+        <item name="android:textStyle">bold</item>    <!-- Bold text style -->
+        <item name="android:textSize">18sp</item>     <!-- Increase text size -->
+    </style>
+
+
 </resources>

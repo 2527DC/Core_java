@@ -1,7 +1,5 @@
 package com.mlt.ets.rider.fragments;
 
-import com.mlt.ets.rider.network.DirectionsResponse;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;

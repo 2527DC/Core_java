@@ -39,6 +39,7 @@ dependencies {
     implementation "com.google.dagger:hilt-android:2.51.1"
     implementation libs.cardview
     implementation libs.firebase.messaging
+    implementation libs.ui.text.android
     annotationProcessor "com.google.dagger:hilt-compiler:2.51.1"
 
     // country code library

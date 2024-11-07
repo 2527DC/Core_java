@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="frequency_options">
-        <item>Daily</item>
-        <item>Weekly</item>
-        <item>Monthly</item>
+        <item>Home</item>
+        <item>Office</item>
     </string-array>
 </resources>

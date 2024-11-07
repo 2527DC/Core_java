@@ -42,13 +42,7 @@
             android:background="@drawable/rounded_item_with_border"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp" />
-        <item
-            android:id="@+id/nav_rac"
 
-            android:title="@string/rac"
-            android:background="@drawable/rounded_item_with_border"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp" />
     </group>
 
 </menu>

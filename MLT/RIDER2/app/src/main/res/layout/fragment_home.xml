@@ -74,7 +74,7 @@
                     android:text="Other" />
             </RadioGroup>
 
-            <!-- Autocomplete Support Fragment for Source Location -->
+
             <fragment
                 android:id="@+id/autocomplete_fragment_source"
                 android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"

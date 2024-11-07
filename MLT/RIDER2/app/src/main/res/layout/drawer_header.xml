@@ -11,33 +11,34 @@
     android:paddingRight="20dp"
     android:background="@color/them_color">
 
-<androidx.cardview.widget.CardView
-android:layout_width="80dp"
-android:layout_height="80dp"
-app:cardCornerRadius="@dimen/_40dp"
-android:backgroundTint="@color/white"
-app:cardElevation="0dp">
-<ImageView
-    android:id="@+id/imageView"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:src="@drawable/ic_profile_image"/>
-</androidx.cardview.widget.CardView>
-
-<TextView
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:text="User Name"
-android:textColor="@android:color/black"
-android:textSize="18sp"
-android:textStyle="bold"
-android:paddingTop="8dp"/>
+    <androidx.cardview.widget.CardView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:cardCornerRadius="@dimen/_40dp"
+        android:backgroundTint="@color/white"
+        app:cardElevation="0dp">
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_profile_image"/>
+    </androidx.cardview.widget.CardView>
 
     <TextView
+        android:id="@+id/userNameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="User Name"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:paddingTop="8dp"/>
+
+    <TextView
+        android:id="@+id/userEmailTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="user@example.com"
         android:textColor="@android:color/black"
         android:textSize="18sp" />
-
 </LinearLayout>

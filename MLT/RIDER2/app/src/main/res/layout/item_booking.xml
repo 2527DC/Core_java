@@ -64,8 +64,8 @@
 
         <!-- Container for status and cancel button -->
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="395dp"
-            android:layout_height="38dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -75,38 +75,36 @@
                 android:id="@+id/textStatusLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:text="Status:"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:layout_marginLeft="10dp"
-                app:layout_constraintEnd_toStartOf="@+id/textStatus"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textStatus"
-                android:layout_width="96dp"
-                android:layout_height="22dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="sans-serif-medium"
                 android:text="Confirmed"
                 android:textColor="#DFE2F4"
                 android:textSize="16sp"
                 android:textStyle="bold"
-            android:fontFamily="sans-serif-medium"
-            app:layout_constraintEnd_toStartOf="@id/cancelButton"
-            app:layout_constraintStart_toEndOf="@id/textStatusLabel"
-            app:layout_constraintTop_toTopOf="@id/textStatusLabel" />
-
+                app:layout_constraintEnd_toStartOf="@id/cancelButton"
+                app:layout_constraintHorizontal_bias="0.179"
+                app:layout_constraintStart_toEndOf="@id/textStatusLabel"
+                app:layout_constraintTop_toTopOf="@id/textStatusLabel" />
 
             <Button
                 android:id="@+id/cancelButton"
                 android:layout_width="94dp"
-                android:layout_height="38dp"
-                android:layout_marginStart="120dp"
-                android:backgroundTint="@android:color/holo_red_dark"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#EB1616"
                 android:text="Cancel"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/textStatus"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 

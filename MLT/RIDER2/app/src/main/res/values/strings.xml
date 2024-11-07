@@ -368,5 +368,10 @@
     <string name="razorpay" translatable="false">Your Razorpay Value Here</string>
     <string name="reviews">Reviews</string>
     <string name="rac">RAC</string>
+    <string name="choose_date">Choose Date</string>
+    <string name="choose_time">Choose Time</string>
+    <string name="submit_booking">Submit Booking</string>
+    <string name="selected_dates">Selected Dates</string>
+    <string name="destination">Destination</string>
 
 </resources>

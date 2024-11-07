@@ -1,88 +1,62 @@
 package com.mlt.ets.rider.services;
 
-import android.Manifest;
-import android.app.Service;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Handler;
-import android.os.IBinder;
+import android.content.Context;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-
-import com.google.android.gms.location.FusedLocationProviderClient;
-
-import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.mlt.ets.rider.Helper.UrlManager;
+import com.google.firebase.database.ValueEventListener;
+import com.mlt.ets.rider.utills.MapUtils;
 
-public class LocationService extends Service {
-    private UrlManager urlManager;
-    private FusedLocationProviderClient fusedLocationClient;
-    private DatabaseReference databaseReference;
-    private Handler handler;
-    private Runnable runnable;
+public class LocationService {
 
-    private static final String TAG = "LocationService";
+    private MapUtils mapUtils;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        databaseReference = FirebaseDatabase.getInstance().getReference("users");
-        // Initialize UrlManager
-        urlManager = new UrlManager(this);
-        handler = new Handler();
-        runnable = new Runnable() {
+private Context context;
+//    // Constructor where you pass context to MapUtils
+    public LocationService(Context context) {
+        // Initialize MapUtils with the given context
+        this.context=context;
+        mapUtils = new MapUtils(context);
+    }
+
+    // Method to fetch the location for a specific driver without using a model class
+    public void fetchDriverLocation(String driverId) {
+        // Firebase reference to fetch the location of a specific driver
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("locations/Driver/" + driverId + "/location");
+
+        // Attach a listener to read the data at the specified location
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void run() {
-                getLocationAndSendToFirebase();
-                handler.postDelayed(this, 3000); // 3 seconds
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Directly access latitude and longitude from the snapshot
+                if (dataSnapshot.exists()) {
+                    double latitude = dataSnapshot.child("latitude").getValue(Double.class);
+                    double longitude = dataSnapshot.child("longitude").getValue(Double.class);
+
+                    LatLng driverLocation = new LatLng(latitude, longitude);  // Driver's current location (latitude, longitude)
+                    LatLng pickupLocation = new LatLng(13.2005, 76.6394);  // Example pickup location (latitude, longitude)
+
+                    // Call the calculateArrivalTime method to calculate the arrival time
+                    mapUtils.calculateArrivalTime(context, driverLocation, pickupLocation);
+                    Log.d("LocationService", context.toString());
+                    // Log the fetched location data
+                    Log.d("LocationService", "Driver " + driverId + " Location: Latitude = " + latitude + ", Longitude = " + longitude);
+
+                    // You can use the fetched data (e.g., update UI or display on a map)
+                } else {
+                    Log.d("LocationService", "No location data found for Driver " + driverId);
+                }
             }
-        };
-        handler.post(runnable);
-    }
 
-    private void getLocationAndSendToFirebase() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Log.e(TAG, "Location permissions not granted");
-            return;
-        }
-
-        fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(location -> {
-                    if (location != null) {
-                        // Get current location
-                        double latitude = location.getLatitude();
-                        double longitude = location.getLongitude();
-                        Log.d("Location service ", "Location: " + latitude + ", " + longitude);
-
-                        // Update location to Firebase
-                        String userId =Integer.toString(urlManager.getUserId()) ; // Replace with actual user ID
-                        databaseReference.child(userId).child("location").setValue(location)
-                                .addOnSuccessListener(aVoid -> Log.d("Location service ", "Location updated in Firebase"))
-                                .addOnFailureListener(e -> Log.e("Location service ", "Failed to update location: " + e.getMessage()));
-                    }
-                });
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        return START_STICKY;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        handler.removeCallbacks(runnable); // Stop the handler when the service is destroyed
-    }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle any errors that occur while fetching data
+                Log.e("LocationService", "Error fetching location: " + databaseError.getMessage());
+            }
+        });
     }
 }

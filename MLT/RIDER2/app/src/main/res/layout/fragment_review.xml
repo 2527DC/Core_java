@@ -36,29 +36,40 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="12dp" />
 
-            <!-- Rating Bar -->
+            <!-- Spinner for selecting a driver -->
+
+            <Spinner
+                android:id="@+id/driverSpinner"
+                android:layout_width="341dp"
+                android:layout_height="42dp"
+                android:layout_marginBottom="12dp"
+                android:spinnerMode="dropdown" />
+
+
+
+            <!-- Review Text Field -->
+
+            <!-- Submit Button -->
             <RatingBar
                 android:id="@+id/ratingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:numStars="5"
-                android:stepSize="1"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="12dp" />
+                android:layout_marginBottom="12dp"
+                android:numStars="5"
+                android:stepSize="1" />
 
-            <!-- Review Text Field -->
             <EditText
                 android:id="@+id/reviewEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Write your review here"
+                android:layout_marginBottom="16dp"
                 android:background="@android:drawable/edit_text"
-                android:padding="12dp"
                 android:gravity="top"
+                android:hint="Write your review here"
                 android:minHeight="100dp"
-                android:layout_marginBottom="16dp" />
+                android:padding="12dp" />
 
-            <!-- Submit Button -->
             <Button
                 android:id="@+id/submitReviewButton"
                 android:layout_width="match_parent"

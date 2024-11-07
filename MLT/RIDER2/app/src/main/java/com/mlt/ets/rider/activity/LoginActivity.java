@@ -7,15 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.FirebaseApp;
-
-
 import com.mlt.ets.rider.Device.DeviceTokenManager;
 import com.mlt.ets.rider.Helper.UrlManager;
 import com.mlt.ets.rider.MainActivity;
@@ -24,10 +16,8 @@ import com.mlt.ets.rider.network.ApiService;
 import com.mlt.ets.rider.network.RetrofitClient;
 import com.mlt.ets.rider.utills.MapUtils;
 import com.mlt.ets.rider.utills.MyEditText;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -43,8 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     private MyEditText etEmail, etPassword;
     private UrlManager urlManager;
 
-    // Firebase Database Reference
-    private DatabaseReference mDatabase;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

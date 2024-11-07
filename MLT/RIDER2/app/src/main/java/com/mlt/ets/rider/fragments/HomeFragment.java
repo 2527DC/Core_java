@@ -3,6 +3,7 @@ package com.mlt.ets.rider.fragments;
 import static android.content.ContentValues.TAG;
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.ConnectivityManager;
@@ -40,12 +41,14 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+
 import com.mlt.ets.rider.Helper.URLS;
 import com.mlt.ets.rider.Helper.UrlManager;
 import com.mlt.ets.rider.R;
 import com.mlt.ets.rider.databinding.FragmentHomeBinding;
 import com.mlt.ets.rider.network.ApiService;
 import com.mlt.ets.rider.network.RetrofitClient;
+import com.mlt.ets.rider.services.LocationService;
 import com.mlt.ets.rider.utills.MapUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -90,6 +93,7 @@ public class HomeFragment extends Fragment implements URLS {
         }
         // Initialize MapUtils
 
+
         urlManager = new UrlManager(getContext());
         mapUtils = new MapUtils(getContext());
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
@@ -115,7 +119,7 @@ public class HomeFragment extends Fragment implements URLS {
                 public void onMapReady(GoogleMap map) {
                     googleMap = map;
                     getCurrentLocation();
-                    googleMap.setOnMapClickListener(HomeFragment.this::selectDestination);
+
                 }
             });
         }
@@ -375,16 +379,17 @@ public class HomeFragment extends Fragment implements URLS {
         }, Looper.getMainLooper());
     }
 
-    private void selectDestination(LatLng latLng) {
-        if (destinationMarker != null) {
-            destinationMarker.remove();
-        }
-        destinationMarker = googleMap.addMarker(new MarkerOptions().position(latLng).title("Destination"));
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null; // Prevent memory leaks
-    }
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//        Intent serviceIntent = new Intent(getContext(), LocationService.class);
+//        getContext().stopService(serviceIntent);
+//    }
+//
+//
+//    @Override
+//    public void onDestroyView() {
+//        super.onDestroyView();
+//        binding = null; // Prevent memory leaks
+//    }
 }
