@@ -54,7 +54,7 @@ public class MapUtils implements URLS {
         double latitude = urlManager.getLatitude();
         double longitude = urlManager.getLongitude();
         String employeeAddress = getAddressFromLatLong(context, latitude, longitude);
-        urlManager.setEmployeAddress(employeeAddress);
+    //        urlManager.setEmployeAddress(employeeAddress);
         return employeeAddress;
     }
 

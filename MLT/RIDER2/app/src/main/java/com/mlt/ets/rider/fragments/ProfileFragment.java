@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.Locale;
+import com.mlt.ets.rider.Helper.UrlManager;
 
 public class ProfileFragment extends Fragment {
 
@@ -43,10 +44,10 @@ public class ProfileFragment extends Fragment {
     private CardView cardEditName;
     private EditText editTextName;
     private Button btnSubmitName;
-
     private Uri imageUri;
     private String currentPhotoPath;
 
+    // Permission launcher for camera
     private final ActivityResultLauncher<String> cameraPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
@@ -56,6 +57,7 @@ public class ProfileFragment extends Fragment {
                 }
             });
 
+    // Camera activity launcher
     private final ActivityResultLauncher<Intent> cameraLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == getActivity().RESULT_OK) {
@@ -64,6 +66,7 @@ public class ProfileFragment extends Fragment {
                 }
             });
 
+    // Image picker activity launcher
     private final ActivityResultLauncher<Intent> imagePickerLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == getActivity().RESULT_OK && result.getData() != null) {
@@ -95,12 +98,10 @@ public class ProfileFragment extends Fragment {
         Button btnEditName = binding.btnEditName;
         btnEditName.setOnClickListener(v -> {
             if (cardEditName.getVisibility() == View.VISIBLE) {
-                // If the edit card is visible, hide it
-                cardEditName.setVisibility(View.GONE);
+                cardEditName.setVisibility(View.GONE); // Hide if visible
             } else {
-                // If the edit card is not visible, show it and populate the EditText with the current name
-                cardEditName.setVisibility(View.VISIBLE);
-                editTextName.setText(txtUserName.getText().toString());
+                cardEditName.setVisibility(View.VISIBLE); // Show if hidden
+                editTextName.setText(txtUserName.getText().toString()); // Set current name
             }
         });
 
@@ -108,7 +109,7 @@ public class ProfileFragment extends Fragment {
             String newName = editTextName.getText().toString();
             if (!newName.isEmpty()) {
                 txtUserName.setText(newName);
-                cardEditName.setVisibility(View.GONE); // Hide after updating
+                cardEditName.setVisibility(View.GONE); // Hide after submitting
                 hideKeyboard();
                 Toast.makeText(getActivity(), "Name updated", Toast.LENGTH_SHORT).show();
             } else {
@@ -120,7 +121,6 @@ public class ProfileFragment extends Fragment {
 
         return root;
     }
-
 
     private void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -174,11 +174,9 @@ public class ProfileFragment extends Fragment {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
 
-        // Define the custom directory within Pictures
         File storageDir = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES), "MyAppImages");
 
-        // Ensure the directory exists
         if (!storageDir.exists()) {
             boolean dirCreated = storageDir.mkdirs();
             if (dirCreated) {
@@ -186,18 +184,14 @@ public class ProfileFragment extends Fragment {
             } else {
                 Log.d("ProfileFragment", "Failed to create directory: " + storageDir.getAbsolutePath());
             }
-        } else {
-            Log.d("ProfileFragment", "Directory already exists: " + storageDir.getAbsolutePath());
         }
 
-        // Create the image file within the custom directory
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
         currentPhotoPath = image.getAbsolutePath();
         Log.d("ProfileFragment", "Image file created: " + currentPhotoPath);
 
         return image;
     }
-
 
     private void pickImageFromGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);

@@ -13,21 +13,40 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/bookingCard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <!-- Floating Action Button for My Location - Positioned above the Map Fragment -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabMyLocation"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:contentDescription="My Location"
+        app:srcCompat="@drawable/ic_my_location"
+    android:backgroundTint="@color/them_color"
+    app:layout_constraintBottom_toTopOf="@+id/bookingCard"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_margin="16dp"
+    app:layout_constraintTop_toTopOf="parent" />  <!-- Keeps the FAB at the top of the screen -->
+    <!-- Aligns the FAB on top of the map -->
 
     <!-- Booking Button -->
+
     <Button
         android:id="@+id/btnBook"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_marginEnd="72dp"
+        android:layout_marginBottom="712dp"
+        android:backgroundTint="@color/them_color"
         android:text="Book"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp"
-        android:backgroundTint="@color/them_color"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Booking Card -->
     <androidx.cardview.widget.CardView
@@ -71,10 +90,10 @@
                     android:id="@+id/radioOther"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Other" />
+                    android:text="RAC" />
             </RadioGroup>
 
-
+            <!-- Autocomplete Fragments for Source and Destination -->
             <fragment
                 android:id="@+id/autocomplete_fragment_source"
                 android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
@@ -88,6 +107,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone" />
+
             <!-- Confirm Booking Button -->
             <Button
                 android:id="@+id/btnConfirmBooking"

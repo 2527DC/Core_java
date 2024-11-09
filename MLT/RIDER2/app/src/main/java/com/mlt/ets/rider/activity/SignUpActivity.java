@@ -106,7 +106,6 @@ public class SignUpActivity extends AppCompatActivity {
             if (locationRetrievalCount == 6) {
                 urlManager.storeLocation(currentLatitude, currentLongitude);
 
-                // Stop location updates after storing the second location
             }
         }
     };
@@ -121,16 +120,30 @@ public class SignUpActivity extends AppCompatActivity {
         String address = mapUtils.getStoredAddressFromLatLong(this);
         Log.d("chethan", address);
 
-        Log.d("SignUpActivity", "Stored  Location: Latitude = " + urlManager.getLatitude() + ", Longitude = " + urlManager.getLatitude());
+        Log.d("SignUpActivity", "Stored Location: Latitude = " + urlManager.getLatitude() + ", Longitude = " + urlManager.getLatitude());
 
         double EmSourceLat = currentLatitude;
         double EmSourceLong = currentLongitude;
 
+        // Validate fields
         if (name.isEmpty() || password.isEmpty() || email.isEmpty() || phone.isEmpty() || selectedGender == null) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        // Email validation (simple regex)
+        if (!isValidEmail(email)) {
+            Toast.makeText(this, "Please enter a valid email address", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Password validation (at least 6 characters)
+        if (password.length() < 6) {
+            Toast.makeText(this, "Password must be at least 6 characters long", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Construct JSON for signup
         JSONObject signUpRequest = new JSONObject();
         try {
             signUpRequest.put("EmSourceLat", EmSourceLat);
@@ -191,6 +204,12 @@ public class SignUpActivity extends AppCompatActivity {
                 resetFields();
             }
         });
+    }
+
+    // Email validation function
+    private boolean isValidEmail(String email) {
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}";
+        return email.matches(emailPattern);
     }
 
     private void resetFields() {

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Popup overlay theme -->
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Dark">
+    <!-- Popup overlay theme (force light theme) -->
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light">
         <item name="android:background">@color/black</item>
         <item name="android:textColor">@color/black</item>
     </style>
+
+    <!-- App theme for light mode -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/primary_color</item>
         <item name="colorPrimaryDark">@color/primary_dark_color</item>
@@ -13,15 +15,26 @@
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:statusBarColor">@color/background_color</item>
     </style>
+
+    <!-- Ensure day mode (light theme) is enforced -->
+    <style name="AppTheme.DayMode" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary_color</item>
+        <item name="colorPrimaryDark">@color/primary_dark_color</item>
+        <item name="colorAccent">@color/accent_color</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">@color/background_color</item>
+    </style>
+
+    <!-- Custom menu item text style -->
     <style name="CustomMenuItemTextStyle" parent="TextAppearance.AppCompat.Menu">
         <item name="android:textSize">18sp</item> <!-- Set your desired text size -->
     </style>
 
+    <!-- Menu item title style -->
     <style name="MenuItemTitleStyle">
         <item name="android:textColor">#FFFFFF</item> <!-- White text color -->
         <item name="android:textStyle">bold</item>    <!-- Bold text style -->
         <item name="android:textSize">18sp</item>     <!-- Increase text size -->
     </style>
-
 
 </resources>

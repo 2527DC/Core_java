@@ -42,6 +42,7 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mlt.ets.rider.Helper.URLS;
 import com.mlt.ets.rider.Helper.UrlManager;
 import com.mlt.ets.rider.R;
@@ -86,6 +87,8 @@ public class HomeFragment extends Fragment implements URLS {
     private LatLng destinationLatLng;
     private Polyline currentPolyline; // For storing the polyline
 
+    private boolean isLocationVisible = false; // Toggle variable for location visibility
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (!Places.isInitialized()) {
@@ -102,7 +105,9 @@ public class HomeFragment extends Fragment implements URLS {
         View root = binding.getRoot();
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
-
+        // Setup the FAB for current location
+        FloatingActionButton fabMyLocation = binding.fabMyLocation;
+        fabMyLocation.setOnClickListener(v -> toggleLocationVisibility());
         setupMap();
         setupBookingButton(root);
         setupAutocompleteFragments();
@@ -118,12 +123,25 @@ public class HomeFragment extends Fragment implements URLS {
                 @Override
                 public void onMapReady(GoogleMap map) {
                     googleMap = map;
-                    getCurrentLocation();
 
                 }
             });
         }
     }
+    private void toggleLocationVisibility() {
+        if (isLocationVisible) {
+            // Hide current location marker and reset the map camera position
+            if (googleMap != null) {
+                googleMap.clear(); // Removes all markers from the map
+            }
+            isLocationVisible = false;
+        } else {
+            // Show current location on the map
+            getCurrentLocation();
+            isLocationVisible = true;
+        }
+    }
+
 
     private void setupBookingButton(View root) {
         bookingCard = binding.bookingCard;
@@ -232,7 +250,7 @@ public class HomeFragment extends Fragment implements URLS {
             String bookingType = selectedRadioButton.getText().toString();
 
             // Only check for latitude and longitude if the selected booking type is "Other"
-            if ("Other".equals(bookingType)) {
+            if ("RAC".equals(bookingType)) {
                 if (sourceLatLng == null || destinationLatLng == null) {
                     Toast.makeText(getContext(), "Please provide both source and destination locations", Toast.LENGTH_SHORT).show();
                     return;
@@ -288,7 +306,7 @@ public class HomeFragment extends Fragment implements URLS {
             bookingDetails.put("booking_type", bookingType);
             bookingDetails.put("api_token", api_token);
             bookingDetails.put("fcm_id", "sample_fcm_token_123");
-            if (bookingType.equals("Other")) {
+            if (bookingType.equals("RAC")) {
                 if (sourceAddress.isEmpty() || destinationAddress.isEmpty()) {
                     Toast.makeText(getContext(), "Please provide both source and destination", Toast.LENGTH_SHORT).show();
                     return;
@@ -350,46 +368,25 @@ public class HomeFragment extends Fragment implements URLS {
     }
 
     private void getCurrentLocation() {
-        LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(3000);
-        locationRequest.setFastestInterval(1000);
-
-        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireActivity(), new String[]{
-                    Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
-            }, 1000);
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // Request permission if not granted
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             return;
         }
 
-        fusedLocationClient.requestLocationUpdates(locationRequest, new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                if (locationResult != null && !locationUpdated) {
-                    Location location = locationResult.getLastLocation();
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(requireActivity(), location -> {
                     if (location != null) {
                         LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-                        addMarker(currentLatLng, "Your Location");
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
-                        locationUpdated = true;
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15)); // Zoom to the current location
+                        googleMap.addMarker(new MarkerOptions().position(currentLatLng).title("You are here"));
+                    } else {
+                        Toast.makeText(getContext(), "Unable to fetch location", Toast.LENGTH_SHORT).show();
                     }
-                }
-            }
-        }, Looper.getMainLooper());
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Failed to get current location", e);
+                    Toast.makeText(getContext(), "Failed to get current location", Toast.LENGTH_SHORT).show();
+                });
     }
-
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//        Intent serviceIntent = new Intent(getContext(), LocationService.class);
-//        getContext().stopService(serviceIntent);
-//    }
-//
-//
-//    @Override
-//    public void onDestroyView() {
-//        super.onDestroyView();
-//        binding = null; // Prevent memory leaks
-//    }
 }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -90,9 +91,16 @@ public class LoginActivity extends AppCompatActivity {
         double emSourceLat = urlManager.getLatitude();
         double emSourceLong = urlManager.getLongitude();
 
-
+// Inside the handleLogin() method:
         if (email.isEmpty()) {
             etEmail.setError("Email cannot be empty");
+            etEmail.requestFocus();
+            return;
+        }
+
+// Email format validation
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            etEmail.setError("Please enter a valid email address");
             etEmail.requestFocus();
             return;
         }
@@ -130,11 +138,22 @@ public class LoginActivity extends AppCompatActivity {
                             JSONObject dataObject = jsonResponse.getJSONObject("data");
                             JSONObject userInfo = dataObject.getJSONObject("userinfo");
                             String apiToken = userInfo.getString("api_token");
-
+                            String  email=userInfo.getString("emailid");
+                            String username =userInfo.getString("user_name");
+                            String Phone= userInfo.getString("phone");
+                            String Phone_code= userInfo.getString("phone_code");
+                            String gender= userInfo.getString("gender");
+//                            String address= userInfo.getString("address");
                             int userID = userInfo.getInt("user_id");
+
+                            urlManager.storeUserEmail(email);
                             urlManager.storeUserId(userID);
                             urlManager.storeApiToken(apiToken);
-
+                            urlManager.storeUsername(username);
+                            urlManager.storePhone(Phone);
+                            urlManager.storeGender(gender);
+                            urlManager.storePhoneCode(Phone_code);
+                            urlManager.setEmployeAddress(address);
                             // Save login state in SharedPreferences
                             SharedPreferences.Editor editor = getSharedPreferences("MyAppPrefs", MODE_PRIVATE).edit();
                             editor.putBoolean("isLoggedIn", true);

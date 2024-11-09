@@ -8,8 +8,11 @@ import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,6 +24,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.mlt.ets.rider.Helper.UrlManager;
 import com.mlt.ets.rider.activity.LoginActivity;
 import com.mlt.ets.rider.databinding.ActivityMainBinding;
@@ -31,13 +35,15 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
 
+    private static final String TAG = "MainActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Initialize LocationService
         locationService = new LocationService(this);
-        locationService.fetchDriverLocation("255");
+        locationService.fetchDriverLocation("145");
 
         // Binding and setting content view
         binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -60,6 +66,46 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        // Set the user data in the navigation drawer header
+        setUserDataInDrawerHeader(navigationView);
+
+        // Get FCM token and log it
+        getFCMToken();
+    }
+
+    private void getFCMToken() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                        return;
+                    }
+//dykThQ4ZSOmOkoRW5cwI5k:APA91bH6WNMHQ4GNyqXDbRqSKRC_SR_s6e2mgSw-3np2dyjG3S_gXhY9fgPCpFKvXvycCtmbdOYhDTLizKCh5K6WxiRDbHGllb4aVqBlVIxibRMjxKjufYI
+                    // Get the FCM token
+                    String token = task.getResult();
+                    Log.d(TAG, "FCM Token: " + token);  // Log the FCM token
+                });
+    }
+
+    private void setUserDataInDrawerHeader(NavigationView navigationView) {
+        // Get the header view of the NavigationView
+        View headerView = navigationView.getHeaderView(0);
+
+        // Access the TextViews in the header layout
+        TextView userNameTextView = headerView.findViewById(R.id.userNameTextView);
+        TextView userEmailTextView = headerView.findViewById(R.id.userEmailTextView);
+
+        // Get the instance of UrlManager
+        UrlManager urlManager = new UrlManager(this);
+
+        // Retrieve the user data (using UrlManager methods)
+        String userName = urlManager.getUserName(); // You can keep this or replace it with the actual method for user name
+        String userEmail = urlManager.getUserEmail();  // Fetch user email using UrlManager
+
+        // Set the user data in the TextViews
+        userNameTextView.setText(userName);
+        userEmailTextView.setText(userEmail);  // Set the email fetched from UrlManager
     }
 
     @Override
@@ -114,7 +160,6 @@ public class MainActivity extends AppCompatActivity {
         menuItem.setTitle(styledText);
     }
 
-
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
@@ -123,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Fetch driver location for the given driver ID (in this case, ID 255)
-    private void fetchDriverLocation(String driverId) {
+    private void fechDriverLocation(String driverId) {
         locationService.fetchDriverLocation(driverId);
     }
 }
