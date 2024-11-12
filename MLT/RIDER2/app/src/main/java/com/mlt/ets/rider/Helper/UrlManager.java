@@ -3,6 +3,9 @@ package com.mlt.ets.rider.Helper;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.mlt.ets.rider.MyApp;
+import com.mlt.ets.rider.MyFirebaseMessagingService;
+
 public class UrlManager {
 
     private static final String PREFS_NAME = "MyAppPrefs";
@@ -16,10 +19,14 @@ public class UrlManager {
     private static final String KEY_GENDER = "gender";
     private static final String KEY_PHONE_CODE = "phone_code";
     private static final String KEY_ADDrESS = "address";
+    private static final String FCM_TOKEN = "fcmtoken";
+    private static final String PROFILE_PIC = "profile_pic";
+
 
     private SharedPreferences sharedPreferences;
-    private String EmployeAddress;
-    private String OfficeAddress;
+
+
+
 
 
     public UrlManager(Context context) {
@@ -152,5 +159,26 @@ public class UrlManager {
 
     public String getEmployeAddress() {
         return sharedPreferences.getString(KEY_ADDrESS, null);
+    }
+  public void setFCMtoken(String token){
+      SharedPreferences.Editor editor = sharedPreferences.edit();
+      editor.putString(FCM_TOKEN,token );
+      editor.apply();
+
+   }
+
+  public String getFcmToken(){
+
+        return sharedPreferences.getString(FCM_TOKEN, null);
+  }
+
+    public void StoreProPic(String string) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(PROFILE_PIC,string );
+        editor.apply();
+    }
+    public String getProfilePic(){
+
+        return sharedPreferences.getString(PROFILE_PIC, null);
     }
 }

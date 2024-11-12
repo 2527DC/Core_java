@@ -17,7 +17,7 @@ public class ProfileViewModel extends ViewModel {
         email = new MutableLiveData<>();
 
         // Initialize with default values or fetch from a data source
-        userName.setValue("John Doe");
+        userName.setValue("Abhishek");
         phoneNumber.setValue("+1234567890");
         email.setValue("john.doe@example.com");
     }

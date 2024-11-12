@@ -44,16 +44,15 @@
                 <!-- Country Code Picker -->
                 <com.hbb20.CountryCodePicker
                     android:id="@+id/countryCodePicker"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_width="91dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:paddingStart="@dimen/_5sdp"
 
                     app:ccp_showFlag="true"
                     app:ccp_showFullName="false"
                     app:ccp_showNameCode="false"
-                    app:ccp_showPhoneCode="true"
-                   />
+                    app:ccp_showPhoneCode="true" />
 
                 <!-- Phone Number Input -->
                 <com.mlt.ets.rider.utills.MyEditText
@@ -128,6 +127,19 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvHint"
                 app:ms_arrow_tint="@color/colorPrimaryDark" />
 
+            <com.jaredrummler.materialspinner.MaterialSpinner
+                android:id="@+id/spcompany"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:contentDescription="@string/select_usertype"
+                android:drawablePadding="@dimen/_10sdp"
+                android:paddingStart="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_5sdp"
+                android:textColor="@color/black_text_color"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvHint"
+                app:ms_arrow_tint="@color/colorPrimaryDark" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

@@ -90,6 +90,8 @@ public class LoginActivity extends AppCompatActivity {
         String password = etPassword.getText().toString().trim();
         double emSourceLat = urlManager.getLatitude();
         double emSourceLong = urlManager.getLongitude();
+        String fcmtoken = urlManager.getFcmToken();
+        Log.d("Loginactivity"," this is fcm token "+ fcmtoken);
 
 // Inside the handleLogin() method:
         if (email.isEmpty()) {
@@ -114,8 +116,7 @@ public class LoginActivity extends AppCompatActivity {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("username", email);
-            jsonObject.put("EmSourceLat", emSourceLat);
-            jsonObject.put("EmSourceLong", emSourceLong);
+            jsonObject.put("fcm_token", fcmtoken);
             jsonObject.put("password", password);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -143,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
                             String Phone= userInfo.getString("phone");
                             String Phone_code= userInfo.getString("phone_code");
                             String gender= userInfo.getString("gender");
-//                            String address= userInfo.getString("address");
+                            String address= userInfo.getString("address");
                             int userID = userInfo.getInt("user_id");
 
                             urlManager.storeUserEmail(email);
@@ -154,6 +155,7 @@ public class LoginActivity extends AppCompatActivity {
                             urlManager.storeGender(gender);
                             urlManager.storePhoneCode(Phone_code);
                             urlManager.setEmployeAddress(address);
+
                             // Save login state in SharedPreferences
                             SharedPreferences.Editor editor = getSharedPreferences("MyAppPrefs", MODE_PRIVATE).edit();
                             editor.putBoolean("isLoggedIn", true);

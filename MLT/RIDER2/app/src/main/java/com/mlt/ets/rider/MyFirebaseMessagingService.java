@@ -6,23 +6,29 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.mlt.ets.rider.Helper.UrlManager;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String CHANNEL_ID = "default_channel";
     private static final String TAG = "FCM message ";
+private UrlManager urlManager;
 
     @Override
     public void onNewToken(@NonNull String token) {
         super.onNewToken(token);
+        urlManager= new UrlManager(this);
+        urlManager.setFCMtoken(token);
         Log.d(TAG, "New token: " + token);
-        // Send token to your server if needed
+
+
     }
 
     @Override

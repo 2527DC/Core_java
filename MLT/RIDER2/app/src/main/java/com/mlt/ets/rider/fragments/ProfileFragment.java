@@ -1,8 +1,10 @@
 package com.mlt.ets.rider.fragments;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
@@ -18,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -27,20 +30,23 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.mlt.ets.rider.MainActivity;
 import com.mlt.ets.rider.databinding.FragmentProfileBinding;
+import com.mlt.ets.rider.Helper.UrlManager;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.Locale;
-import com.mlt.ets.rider.Helper.UrlManager;
 
 public class ProfileFragment extends Fragment {
-
+    private UrlManager urlManager;
     private FragmentProfileBinding binding;
     private de.hdodenhof.circleimageview.CircleImageView imgProfile;
-    private TextView txtUserName;
+    private TextView txtUserName, phoneValue, emailValue, genderValue, addressValue;
     private CardView cardEditName;
     private EditText editTextName;
     private Button btnSubmitName;
@@ -62,11 +68,12 @@ public class ProfileFragment extends Fragment {
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == getActivity().RESULT_OK) {
                     imgProfile.setImageURI(imageUri);
+                    saveImageUri(imageUri); // Save URI persistently
                     Toast.makeText(getActivity(), "Image saved in custom directory", Toast.LENGTH_SHORT).show();
                 }
             });
 
-    // Image picker activity launcher
+    // Gallery image picker launcher
     private final ActivityResultLauncher<Intent> imagePickerLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == getActivity().RESULT_OK && result.getData() != null) {
@@ -74,7 +81,7 @@ public class ProfileFragment extends Fragment {
                     if (selectedImage != null) {
                         try {
                             Uri savedImageUri = saveImageInAppDirectory(selectedImage);
-                            imgProfile.setImageURI(savedImageUri);
+                            updateProfileImage(savedImageUri);
                             Toast.makeText(getActivity(), "Image saved in custom directory", Toast.LENGTH_SHORT).show();
                         } catch (IOException e) {
                             Toast.makeText(getActivity(), "Failed to save image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -83,43 +90,63 @@ public class ProfileFragment extends Fragment {
                 }
             });
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ProfileViewModel profileViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        urlManager = new UrlManager(getContext());
+
         imgProfile = binding.imgProfile;
         txtUserName = binding.userNameValue;
         cardEditName = binding.cardEditName;
         editTextName = binding.editTextName;
         btnSubmitName = binding.btnSubmitName;
+        phoneValue = binding.phoneValue;
+        emailValue = binding.emailValue;
+        genderValue = binding.genderValue;
+        addressValue = binding.addressValue;
 
+
+        loadSavedProfileImage();
+        txtUserName.setText(urlManager.getUserName());
+        phoneValue.setText(urlManager.getPhoneCode() + " " + urlManager.getPhone());
+        emailValue.setText(urlManager.getUserEmail());
+        genderValue.setText(urlManager.getGender());
+        addressValue.setText(urlManager.getEmployeAddress());
+
+        // Edit name button and submission logic
         Button btnEditName = binding.btnEditName;
-        btnEditName.setOnClickListener(v -> {
-            if (cardEditName.getVisibility() == View.VISIBLE) {
-                cardEditName.setVisibility(View.GONE); // Hide if visible
-            } else {
-                cardEditName.setVisibility(View.VISIBLE); // Show if hidden
-                editTextName.setText(txtUserName.getText().toString()); // Set current name
-            }
-        });
+        btnEditName.setOnClickListener(v -> toggleEditNameView());
+        btnSubmitName.setOnClickListener(v -> submitNameChange());
 
-        btnSubmitName.setOnClickListener(v -> {
-            String newName = editTextName.getText().toString();
-            if (!newName.isEmpty()) {
-                txtUserName.setText(newName);
-                cardEditName.setVisibility(View.GONE); // Hide after submitting
-                hideKeyboard();
-                Toast.makeText(getActivity(), "Name updated", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getActivity(), "Name cannot be empty", Toast.LENGTH_SHORT).show();
-            }
-        });
-
+        // Set up image upload button
         binding.btnUploadImage.setOnClickListener(v -> showImageSourceDialog());
 
         return root;
+    }
+
+    private void toggleEditNameView() {
+        if (cardEditName.getVisibility() == View.VISIBLE) {
+            cardEditName.setVisibility(View.GONE); // Hide if visible
+        } else {
+            cardEditName.setVisibility(View.VISIBLE); // Show if hidden
+            editTextName.setText(txtUserName.getText().toString()); // Set current name
+        }
+    }
+
+    private void submitNameChange() {
+        String newName = editTextName.getText().toString();
+        if (!newName.isEmpty()) {
+            txtUserName.setText(newName);
+            cardEditName.setVisibility(View.GONE);
+            hideKeyboard();
+            Toast.makeText(getActivity(), "Name updated", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getActivity(), "Name cannot be empty", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void hideKeyboard() {
@@ -134,19 +161,14 @@ public class ProfileFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Select Image Source")
                 .setItems(options, (dialog, which) -> {
-                    switch (which) {
-                        case 0: // Camera
-                            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                                cameraPermissionLauncher.launch(Manifest.permission.CAMERA);
-                            } else {
-                                takePicture();
-                            }
-                            break;
-                        case 1: // Gallery
-                            pickImageFromGallery();
-                            break;
-                        default:
-                            break;
+                    if (which == 0) { // Camera
+                        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                            cameraPermissionLauncher.launch(Manifest.permission.CAMERA);
+                        } else {
+                            takePicture();
+                        }
+                    } else { // Gallery
+                        pickImageFromGallery();
                     }
                 });
         builder.show();
@@ -159,9 +181,8 @@ public class ProfileFragment extends Fragment {
                 File photoFile = createImageFile();
                 imageUri = FileProvider.getUriForFile(
                         getActivity(),
-                        getActivity().getPackageName() + ".fileprovider", // Ensure this matches your manifest
+                        getActivity().getPackageName() + ".fileprovider",
                         photoFile);
-
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                 cameraLauncher.launch(takePictureIntent);
             } catch (IOException e) {
@@ -173,23 +194,12 @@ public class ProfileFragment extends Fragment {
     private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-
-        File storageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "MyAppImages");
-
-        if (!storageDir.exists()) {
-            boolean dirCreated = storageDir.mkdirs();
-            if (dirCreated) {
-                Log.d("ProfileFragment", "Directory created: " + storageDir.getAbsolutePath());
-            } else {
-                Log.d("ProfileFragment", "Failed to create directory: " + storageDir.getAbsolutePath());
-            }
+        File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "MyAppImages");
+        if (!storageDir.exists() && !storageDir.mkdirs()) {
+            Log.d("ProfileFragment", "Failed to create directory: " + storageDir.getAbsolutePath());
         }
-
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
         currentPhotoPath = image.getAbsolutePath();
-        Log.d("ProfileFragment", "Image file created: " + currentPhotoPath);
-
         return image;
     }
 
@@ -201,26 +211,35 @@ public class ProfileFragment extends Fragment {
     private Uri saveImageInAppDirectory(Uri sourceUri) throws IOException {
         File storageDir = getActivity().getFilesDir();
         File imageFile = new File(storageDir, "selected_image.jpg");
-
         try (InputStream inputStream = getActivity().getContentResolver().openInputStream(sourceUri);
              FileOutputStream outputStream = new FileOutputStream(imageFile)) {
-
             byte[] buffer = new byte[4096];
             int bytesRead;
-
             while ((bytesRead = inputStream.read(buffer)) != -1) {
                 outputStream.write(buffer, 0, bytesRead);
             }
-
-            Log.d("ProfileFragment", "Image saved in app directory: " + imageFile.getAbsolutePath());
         }
-
         return Uri.fromFile(imageFile);
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    private void loadSavedProfileImage() {
+
+        String savedImageUriString =urlManager.getProfilePic();
+        if (savedImageUriString != null) {
+            Uri savedImageUri = Uri.parse(savedImageUriString);
+            imgProfile.setImageURI(savedImageUri);
+        }
+    }
+
+    private void saveImageUri(Uri uri) {
+        urlManager.StoreProPic( uri.toString());
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).updateNavigationDrawerImage(uri);
+        }
+    }
+
+    private void updateProfileImage(Uri uri) {
+        imgProfile.setImageURI(uri);
+        saveImageUri(uri); // Save URI persistently
     }
 }

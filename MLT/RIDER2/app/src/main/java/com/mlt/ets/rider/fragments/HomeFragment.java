@@ -3,9 +3,10 @@ package com.mlt.ets.rider.fragments;
 import static android.content.ContentValues.TAG;
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
+
 import android.content.pm.PackageManager;
 import android.location.Location;
+
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
+
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
@@ -43,13 +45,18 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mlt.ets.rider.Helper.URLS;
 import com.mlt.ets.rider.Helper.UrlManager;
 import com.mlt.ets.rider.R;
 import com.mlt.ets.rider.databinding.FragmentHomeBinding;
 import com.mlt.ets.rider.network.ApiService;
 import com.mlt.ets.rider.network.RetrofitClient;
-import com.mlt.ets.rider.services.LocationService;
+
 import com.mlt.ets.rider.utills.MapUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -94,8 +101,6 @@ public class HomeFragment extends Fragment implements URLS {
         if (!Places.isInitialized()) {
             Places.initialize(requireContext(), Api_key);
         }
-        // Initialize MapUtils
-
 
         urlManager = new UrlManager(getContext());
         mapUtils = new MapUtils(getContext());
@@ -105,9 +110,40 @@ public class HomeFragment extends Fragment implements URLS {
         View root = binding.getRoot();
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
+
         // Setup the FAB for current location
         FloatingActionButton fabMyLocation = binding.fabMyLocation;
         fabMyLocation.setOnClickListener(v -> toggleLocationVisibility());
+
+        // Setup the SOS button
+        FloatingActionButton fabSOS = binding.fabSOS;
+
+        // Check status from Firebase Realtime Database
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("locations/Drivers").child("161");
+        databaseReference.child("status").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Integer status = dataSnapshot.getValue(Integer.class);
+                Log.d("HomeFragment", "The Status is: " + status);
+                if (status != null && status == 1) {
+                    // Show SOS button if status is 1
+                    fabSOS.setVisibility(View.VISIBLE);
+                } else {
+                    // Hide SOS button if status is not 1
+                    fabSOS.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle possible errors
+                Log.e("Firebase", "Error fetching status: " + databaseError.getMessage());
+            }
+        });
+
+        // Set click listener for SOS button
+        fabSOS.setOnClickListener(v -> handleSOSAction());
+
         setupMap();
         setupBookingButton(root);
         setupAutocompleteFragments();
@@ -115,6 +151,13 @@ public class HomeFragment extends Fragment implements URLS {
 
         return root;
     }
+
+    // Method to handle SOS button click action
+    private void handleSOSAction() {
+        // Add your SOS action here, such as sending an alert or notifying emergency contacts
+        Toast.makeText(getContext(), "SOS Activated!", Toast.LENGTH_SHORT).show();
+    }
+
 
     private void setupMap() {
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
@@ -136,11 +179,18 @@ public class HomeFragment extends Fragment implements URLS {
             }
             isLocationVisible = false;
         } else {
+            // Check for location permission
+            if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                return;
+            }
             // Show current location on the map
             getCurrentLocation();
             isLocationVisible = true;
         }
     }
+
 
 
     private void setupBookingButton(View root) {
@@ -363,13 +413,16 @@ public class HomeFragment extends Fragment implements URLS {
     // Method to check if internet is available
     private boolean isInternetAvailable() {
         ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        if (cm != null) {
+            NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+            return networkInfo != null && networkInfo.isConnectedOrConnecting();
+        }
+        return false;
     }
+
 
     private void getCurrentLocation() {
         if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // Request permission if not granted
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             return;
         }
@@ -377,16 +430,45 @@ public class HomeFragment extends Fragment implements URLS {
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(requireActivity(), location -> {
                     if (location != null) {
-                        LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15)); // Zoom to the current location
-                        googleMap.addMarker(new MarkerOptions().position(currentLatLng).title("You are here"));
+                        // Show the current location on the map
+                        showLocationOnMap(location);
                     } else {
-                        Toast.makeText(getContext(), "Unable to fetch location", Toast.LENGTH_SHORT).show();
+                        // If last location is null, request a new location update
+                        LocationRequest locationRequest = LocationRequest.create();
+                        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+                        locationRequest.setInterval(5000); // Set the interval for location updates
+                        locationRequest.setFastestInterval(2000);
+
+                        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
                     }
                 })
                 .addOnFailureListener(e -> {
                     Log.e(TAG, "Failed to get current location", e);
                     Toast.makeText(getContext(), "Failed to get current location", Toast.LENGTH_SHORT).show();
                 });
+    }
+
+    // Callback for receiving location updates
+    private final LocationCallback locationCallback = new LocationCallback() {
+        @Override
+        public void onLocationResult(LocationResult locationResult) {
+            if (locationResult == null) {
+                return;
+            }
+            // Get the most recent location update
+            Location location = locationResult.getLastLocation();
+            if (location != null) {
+                showLocationOnMap(location);
+                // Stop location updates after getting the location
+                fusedLocationClient.removeLocationUpdates(locationCallback);
+            }
+        }
+    };
+
+    // Function to show location on the map
+    private void showLocationOnMap(Location location) {
+        LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
+        googleMap.addMarker(new MarkerOptions().position(currentLatLng).title("You are here"));
     }
 }

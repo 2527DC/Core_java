@@ -11,19 +11,23 @@
     android:paddingRight="20dp"
     android:background="@color/them_color">
 
+    <!-- CardView holding CircleImageView -->
     <androidx.cardview.widget.CardView
         android:layout_width="80dp"
         android:layout_height="80dp"
         app:cardCornerRadius="@dimen/_40dp"
         android:backgroundTint="@color/white"
         app:cardElevation="0dp">
-        <ImageView
+
+        <!-- Use CircleImageView instead of ImageView -->
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/ic_profile_image"/>
     </androidx.cardview.widget.CardView>
 
+    <!-- User Name TextView -->
     <TextView
         android:id="@+id/userNameTextView"
         android:layout_width="match_parent"
@@ -34,6 +38,7 @@
         android:textStyle="bold"
         android:paddingTop="8dp"/>
 
+    <!-- User Email TextView -->
     <TextView
         android:id="@+id/userEmailTextView"
         android:layout_width="match_parent"

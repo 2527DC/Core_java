@@ -373,5 +373,6 @@
     <string name="submit_booking">Submit Booking</string>
     <string name="selected_dates">Selected Dates</string>
     <string name="destination">Destination</string>
+    <string name="select_usertype">User Type</string>
 
 </resources>
