@@ -144,6 +144,13 @@ public class HomeFragment extends Fragment implements URLS {
         // Set click listener for SOS button
         fabSOS.setOnClickListener(v -> handleSOSAction());
 
+        // Initialize a new button (e.g., btnTrackDriver) and set click listener
+        Button btnTrackDriver = binding.btnTrackDriver;  // Assuming you have a Button in your XML with id 'btnTrackDriver'
+        btnTrackDriver.setOnClickListener(v -> {
+            // Show a toast message when button is clicked
+            Toast.makeText(getContext(), "Track Driver Button Clicked!", Toast.LENGTH_SHORT).show();
+        });
+
         setupMap();
         setupBookingButton(root);
         setupAutocompleteFragments();
@@ -306,7 +313,6 @@ public class HomeFragment extends Fragment implements URLS {
                     return;
                 }
                 // Request directions from Google Maps API
-
                 mapUtils.getDirections(googleMap, sourceLatLng, destinationLatLng);
             }
 

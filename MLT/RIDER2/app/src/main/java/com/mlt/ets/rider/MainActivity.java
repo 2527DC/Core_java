@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Set up the AppBarConfiguration with top-level destinations
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_booking, R.id.nav_profile, R.id.nav_schedule, R.id.nav_review, R.id.nav_rac)
+                R.id.nav_home, R.id.nav_booking, R.id.nav_profile, R.id.nav_schedule, R.id.nav_review, R.id.nav_Driver)
                 .setOpenableLayout(drawer)
                 .build();
 

@@ -33,9 +33,10 @@
         android:name="com.mlt.ets.rider.fragments.BookingHistoryFragment"
         android:label="@string/Bookings"
         tools:layout="@layout/fragment_booking_history" />
+
     <fragment
-        android:id="@+id/nav_rac"
-        android:name="com.mlt.ets.rider.fragments.FragmentRAC"
-        android:label="@string/rac"
-        tools:layout="@layout/fragment_rac" />
+        android:id="@+id/nav_Driver"
+        android:name="com.mlt.ets.rider.fragments.DriverDetailsFragment"
+        android:label="Driver Details"
+        tools:layout="@layout/fragment_dariver_details" />
 </navigation>
