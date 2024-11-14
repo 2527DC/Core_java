@@ -111,6 +111,5 @@ public class BookingHistoryViewModel extends ViewModel {
         return bookings;
     }
 
-    public void cancelBooking(String bookingId) {
-    }
+
 }

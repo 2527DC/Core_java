@@ -35,7 +35,7 @@
             bookingHistoryViewModel = new BookingHistoryViewModel(requireContext());
 
             // Set the adapter with an empty list
-            adapter = new BookingHistoryAdapter(new ArrayList<>(), this); // Pass this fragment as the listener
+            adapter = new BookingHistoryAdapter(new ArrayList<>(), this,getContext()); // Pass this fragment as the listener
             recyclerView.setAdapter(adapter);
 
             // Observe the LiveData from the ViewModel
@@ -49,16 +49,11 @@
             return view;
         }
 
-        @Override
-        public void onCancelBooking(String bookingId) {
-            // Call your cancellation method using the bookingId
-            cancelBooking(bookingId);
-        }
 
-        private void cancelBooking(String bookingId) {
-            // Implement the API call to cancel the booking
-            // Show a confirmation dialog or Toast to the user
-            // After successfully cancelling, refresh the booking list
-            bookingHistoryViewModel.cancelBooking(bookingId); // Assume this method exists in your ViewModel
+
+
+        @Override
+        public void onCancelBooking(String bookingId, int position, BookingHistoryAdapter.ViewHolder holder) {
+
         }
     }

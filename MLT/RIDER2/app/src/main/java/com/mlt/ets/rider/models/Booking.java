@@ -11,6 +11,15 @@ public class Booking {
     private String rideStatus;
     private String status;
     private String bookingId;
+    private boolean isCanceled;
+    // Getters and Setters
+    public boolean isCanceled() {
+        return isCanceled;
+    }
+
+    public void setCanceled(boolean canceled) {
+        isCanceled = canceled;
+    }
 
     public String getBookingId() {
         return bookingId;

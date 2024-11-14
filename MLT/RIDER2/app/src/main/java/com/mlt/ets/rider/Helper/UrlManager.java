@@ -2,6 +2,7 @@ package com.mlt.ets.rider.Helper;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.mlt.ets.rider.MyApp;
 import com.mlt.ets.rider.MyFirebaseMessagingService;
@@ -22,6 +23,11 @@ public class UrlManager {
     private static final String FCM_TOKEN = "fcmtoken";
     private static final String PROFILE_PIC = "profile_pic";
 
+    private static final String DRIVER_PREFS = "driver_prefs";
+    private static final String DRIVER_NAME = "driver_name";
+    private static final String VEHICLE_TYPE = "vehicle_type";
+    private static final String VEHICLE_NUMBER = "vehicle_number";
+    private static final String OTP = "otp";
 
     private SharedPreferences sharedPreferences;
 
@@ -160,6 +166,7 @@ public class UrlManager {
     public String getEmployeAddress() {
         return sharedPreferences.getString(KEY_ADDrESS, null);
     }
+
   public void setFCMtoken(String token){
       SharedPreferences.Editor editor = sharedPreferences.edit();
       editor.putString(FCM_TOKEN,token );
@@ -181,4 +188,33 @@ public class UrlManager {
 
         return sharedPreferences.getString(PROFILE_PIC, null);
     }
+
+    public void StoreDrivedetails(String driverName, String vehicleType, String vehicleNumber, String otp) {
+
+        Log.d("Chethan"," saved the details  of driver "+ " "+ driverName);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(DRIVER_NAME, driverName);
+        editor.putString(VEHICLE_TYPE, vehicleType);
+        editor.putString(VEHICLE_NUMBER, vehicleNumber);
+        editor.putString(OTP, otp);
+        editor.apply();
+    }
+
+    // Getter Methods
+    public String getDriverName() {
+        return sharedPreferences.getString(DRIVER_NAME, "Not yet assigend"); // Default value is an empty string if not found
+    }
+
+    public String getVehicleType() {
+        return sharedPreferences.getString(VEHICLE_TYPE, "Not yet assigend"); // Default value is an empty string if not found
+    }
+
+    public String getVehicleNumber() {
+        return sharedPreferences.getString(VEHICLE_NUMBER, "Not yet assigend"); // Default value is an empty string if not found
+    }
+
+    public String getOtp() {
+        return sharedPreferences.getString(OTP, "Not yet assigend"); // Default value is an empty string if not found
+    }
+
 }

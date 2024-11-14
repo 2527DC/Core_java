@@ -32,12 +32,7 @@ public interface ApiService {
     @POST("api/ride-history") // Replace with your actual endpoint
     Call<ResponseBody> getBookingHistory(@Body RequestBody requestBody);
 
-    // New method to get directions
-    @GET("maps/api/directions/json") // Google Maps Directions API endpoint
-    Call<ResponseBody> getDirections(
-            @Query("origin") String origin, // sourceLat,sourceLng
-            @Query("destination") String destination, // destLat,destLng
-            @Query("key") String apiKey // Your Google Maps API Key
-    );
+    @POST("api/cancel-booking")
+    Call<ResponseBody> cancleBooking(@Body RequestBody requestBody);
 }
 

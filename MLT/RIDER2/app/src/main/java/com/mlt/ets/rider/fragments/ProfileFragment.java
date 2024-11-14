@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
@@ -20,7 +19,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -30,17 +28,16 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.mlt.ets.rider.MainActivity;
 import com.mlt.ets.rider.databinding.FragmentProfileBinding;
 import com.mlt.ets.rider.Helper.UrlManager;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 public class ProfileFragment extends Fragment {
     private UrlManager urlManager;
@@ -150,7 +147,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
             imm.hideSoftInputFromWindow(editTextName.getWindowToken(), 0);
         }
@@ -158,7 +155,7 @@ public class ProfileFragment extends Fragment {
 
     private void showImageSourceDialog() {
         String[] options = {"Camera", "Gallery"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         builder.setTitle("Select Image Source")
                 .setItems(options, (dialog, which) -> {
                     if (which == 0) { // Camera
@@ -231,7 +228,7 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private void saveImageUri(Uri uri) {
+    private void saveImageUri(@NonNull Uri uri) {
         urlManager.StoreProPic( uri.toString());
         if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).updateNavigationDrawerImage(uri);

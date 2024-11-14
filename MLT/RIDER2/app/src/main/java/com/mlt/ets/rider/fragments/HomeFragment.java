@@ -2,11 +2,12 @@ package com.mlt.ets.rider.fragments;
 
 import static android.content.ContentValues.TAG;
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.Context;
-
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.Location;
-
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -27,7 +28,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
-
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
@@ -36,14 +36,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -56,7 +53,6 @@ import com.mlt.ets.rider.R;
 import com.mlt.ets.rider.databinding.FragmentHomeBinding;
 import com.mlt.ets.rider.network.ApiService;
 import com.mlt.ets.rider.network.RetrofitClient;
-
 import com.mlt.ets.rider.utills.MapUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,94 +65,160 @@ import retrofit2.Response;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 
-
 public class HomeFragment extends Fragment implements URLS {
-
     private UrlManager urlManager;
     private FragmentHomeBinding binding;
     private GoogleMap googleMap;
     private CardView bookingCard;
     private FusedLocationProviderClient fusedLocationClient;
-    private Marker destinationMarker;
     private HomeViewModel homeViewModel;
     private MapUtils mapUtils;
     private String sourceAddress = "";
     private String destinationAddress = "";
-
     private RadioGroup bookingTypeRadioGroup;
-    private boolean locationUpdated = false;
-
     private AutocompleteSupportFragment sourceAutocomplete;
     private AutocompleteSupportFragment destinationAutocomplete;
-
-    // Other variables...
     private LatLng sourceLatLng;
     private LatLng destinationLatLng;
-    private Polyline currentPolyline; // For storing the polyline
-
     private boolean isLocationVisible = false; // Toggle variable for location visibility
+
+private   String driverName =" not yet assigned",
+        vehicleType=" not yet assigned",
+        vehicleNumber=" not yet assigned",
+        otp=" not yet assigned";
+    // BroadcastReceiver to listen for updates to driver details
+    private final BroadcastReceiver driverInfoReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Extract driver details from the received intent
+            driverName = intent.getStringExtra("driver_name");
+             vehicleType = intent.getStringExtra("vehicle_type");
+         vehicleNumber = intent.getStringExtra("vehicle_number");
+          otp = intent.getStringExtra("otp");
+
+            // Store the received driver details into UrlManager or SharedPreferences
+//            urlManager.StoreDrivedetails(driverName, vehicleType, vehicleNumber, otp);
+
+            // Update the UI with the new driver details
+            updateDriverDetails(driverName, vehicleType, vehicleNumber, otp);
+        }
+    };
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflate the layout with ViewBinding first
+        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
+
+        // Initialize Google Places if not already initialized
         if (!Places.isInitialized()) {
             Places.initialize(requireContext(), Api_key);
         }
 
+        // Initialize UrlManager, MapUtils, and ViewModel
         urlManager = new UrlManager(getContext());
         mapUtils = new MapUtils(getContext());
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        // Initialize Google Places if not already initialized
+        if (!Places.isInitialized()) {
+            Places.initialize(requireContext(), Api_key);
+        }
+        // Set initial driver details from UrlManager
 
+        // Register the receiver to listen for the broadcast
+        IntentFilter filter = new IntentFilter("com.mlt.ets.rider.DRIVER_INFO");
+        getContext().registerReceiver(driverInfoReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
+
+
+        // Set up FusedLocationProviderClient for location services
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
 
-        // Setup the FAB for current location
+        // Floating Action Button for current location
         FloatingActionButton fabMyLocation = binding.fabMyLocation;
         fabMyLocation.setOnClickListener(v -> toggleLocationVisibility());
 
-        // Setup the SOS button
+        // Floating Action Button for SOS
         FloatingActionButton fabSOS = binding.fabSOS;
 
-        // Check status from Firebase Realtime Database
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("locations/Drivers").child("161");
+        // Firebase Realtime Database reference for checking driver status
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance()
+                .getReference("locations/Drivers")
+                .child("161");
+
+        // Add a listener to Firebase Database to observe status changes
         databaseReference.child("status").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Integer status = dataSnapshot.getValue(Integer.class);
                 Log.d("HomeFragment", "The Status is: " + status);
+                // Show or hide SOS button based on status
                 if (status != null && status == 1) {
-                    // Show SOS button if status is 1
                     fabSOS.setVisibility(View.VISIBLE);
                 } else {
-                    // Hide SOS button if status is not 1
                     fabSOS.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle possible errors
+                // Log errors if data fetching fails
                 Log.e("Firebase", "Error fetching status: " + databaseError.getMessage());
             }
         });
 
-        // Set click listener for SOS button
+        // Set click listener for the SOS button
         fabSOS.setOnClickListener(v -> handleSOSAction());
 
-        // Initialize a new button (e.g., btnTrackDriver) and set click listener
-        Button btnTrackDriver = binding.btnTrackDriver;  // Assuming you have a Button in your XML with id 'btnTrackDriver'
-        btnTrackDriver.setOnClickListener(v -> {
-            // Show a toast message when button is clicked
-            Toast.makeText(getContext(), "Track Driver Button Clicked!", Toast.LENGTH_SHORT).show();
-        });
+        // Click listener for the Driver Details button
+        Button btnDriverDetails = binding.btnDriverDetails;
+        btnDriverDetails.setOnClickListener(v -> toggleDriverDetailsVisibility());
+        CardView cardDriverDetails = binding.driverDetailsLayout; // Ensure you have a CardView in XML with id 'driver_details_layout'
 
+        // Initially hide the driver details card
+        cardDriverDetails.setVisibility(View.GONE);
+
+        // Track driver location button
+        Button btnTDL = binding.btnTrackDriver;
+
+        // Set click listener for the TDL button
+        btnTDL.setOnClickListener(v -> handleTDLbtn());
+
+        // Additional setup methods for map and UI components
         setupMap();
         setupBookingButton(root);
         setupAutocompleteFragments();
         setupBookingTypeSelection();
 
         return root;
+    }
+
+    // Method to update the UI with the current driver details
+    private void updateDriverDetails(String  driverName, String vehicleType, String vehicleNumber, String otp) {
+        // Set the text on the TextViews using the binding object
+        binding.driverName.setText(driverName);
+        binding.vehicleType.setText(vehicleType);
+        binding.vehicleNumber.setText(vehicleNumber);
+        binding.otp.setText(otp);
+    }
+    // Method to handle TDL button click action
+    private void handleTDLbtn() {
+        Toast.makeText(getContext(), "Tracking the driver location!", Toast.LENGTH_SHORT).show();
+    }
+
+    // Method to handle driverdetails  button click action
+    private void toggleDriverDetailsVisibility() {
+        // Get the current visibility of the driver details layout
+        int currentVisibility = binding.driverDetailsLayout.getVisibility();
+
+        // Toggle the visibility
+        if (currentVisibility == View.VISIBLE) {
+            // If it's visible, hide it
+            binding.driverDetailsLayout.setVisibility(View.GONE);
+        } else {
+            // If it's not visible, show it
+            binding.driverDetailsLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     // Method to handle SOS button click action
@@ -476,5 +538,12 @@ public class HomeFragment extends Fragment implements URLS {
         LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
         googleMap.addMarker(new MarkerOptions().position(currentLatLng).title("You are here"));
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // Unregister the receiver when the fragment is destroyed
+
     }
 }
