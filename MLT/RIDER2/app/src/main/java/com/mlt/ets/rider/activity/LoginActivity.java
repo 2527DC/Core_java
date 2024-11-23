@@ -1,5 +1,4 @@
 package com.mlt.ets.rider.activity;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -115,6 +114,7 @@ public class LoginActivity extends AppCompatActivity {
 
         JSONObject jsonObject = new JSONObject();
         try {
+            jsonObject.put("fcm_id", urlManager.getFcmToken());
             jsonObject.put("username", email);
             jsonObject.put("fcm_token", fcmtoken);
             jsonObject.put("password", password);

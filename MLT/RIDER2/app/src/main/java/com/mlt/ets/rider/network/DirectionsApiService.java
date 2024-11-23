@@ -1,4 +1,4 @@
-package com.mlt.ets.rider.fragments;
+package com.mlt.ets.rider.network;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;

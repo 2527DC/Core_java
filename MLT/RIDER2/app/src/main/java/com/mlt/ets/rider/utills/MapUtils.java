@@ -18,7 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mlt.ets.rider.Helper.URLS;
 import com.mlt.ets.rider.Helper.UrlManager;
-import com.mlt.ets.rider.fragments.DirectionsApiService;
+import com.mlt.ets.rider.network.DirectionsApiService;
 import com.mlt.ets.rider.network.GoogleMapsRetrofitClient;
 
 import org.json.JSONArray;

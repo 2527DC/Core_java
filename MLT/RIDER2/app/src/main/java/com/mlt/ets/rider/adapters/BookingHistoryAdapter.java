@@ -53,7 +53,7 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
         Booking booking = bookingList.get(position);
 
         // Set values for each TextView based on the booking details
-        holder.textBookingDate.setText("Date: " + booking.ge tBookDate());
+        holder.textBookingDate.setText("Date: " + booking.getBookDate());
         holder.textBookingTime.setText("Time: " + booking.getBookTime());
         holder.textSourceAddress.setText("Source: " + booking.getSourceAddress());
         holder.textDestAddress.setText("Destination: " + booking.getDestAddress());
