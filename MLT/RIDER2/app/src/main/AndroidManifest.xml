@@ -38,7 +38,7 @@
         android:resource="@color/colorAccent" />
     <meta-data
         android:name="com.google.android.geo.API_KEY"
-        android:value="AIzaSyCI7CwlYJ6Qt5pQGW--inSsJmdEManW-K0" /> <!-- Replace with your actual API key -->
+        android:value="" /> <!-- Replace with your actual API key -->
 
     <!-- Main activity -->
     <activity
